@@ -1,0 +1,11 @@
+#this should also work as documentation on used libraries
+requests
+validators
+argparse
+pillow
+tldextract
+pytesseract
+opencv-python
+lxml
+# also using
+# pickle
