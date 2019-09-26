@@ -1,6 +1,8 @@
 # cpgather
 infogather tool
 
+NOTE: this is still under development, then you can expect some buggy behavior.
+
 cpgather is an automation tool designed to gather relevant information on a target domain and perform a few tasks.
 
 You need to provide the target domain, and optionally a forward dns dump file.
