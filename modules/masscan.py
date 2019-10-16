@@ -3,15 +3,16 @@
 import os
 import subprocess
 
-def execMasscan(domain):
+def execMasscan(domain,ports):
     '''
 
     :param domain: target domain so we can reach domain.ips file properly
     :return: standard masscan output / errors
     '''
+
     if os.path.isfile(domain + ".masscan") == False or os.path.getsize(domain + ".masscan") == 0:
         p = subprocess.Popen(
-            ['/usr/bin/masscan', '-p', '1-65535', '--randomize-hosts', '-Pn', '-iL', domain + ".ips", '--output-format=list',
+            ['/usr/bin/masscan', '-p', str(ports), '--randomize-hosts', '-Pn', '-iL', domain + ".ips", '--output-format=list',
              '--output-file=' + domain + ".masscan", '--rate', "10000"],
             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         out, err = p.communicate()

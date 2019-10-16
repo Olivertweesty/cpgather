@@ -7,8 +7,13 @@ import cv2
 import os
 from modules.photon import execPhoton, parsePhoton
 from modules.massdns import parseMassdnsStruct
+from reppy.robots import Robots
 
 #dirsearch/dirsearch.py -b -t 100 -e php,asp,aspx,jsp,html,zip,jar,sql -x 500,503 -r -w $WORDLIST_PATH/raft-large-words.txt -u $url --plain-text-report=$DIR_PATH/dirsearch/$fqdn.tmp
+
+
+
+
 
 
 def findJWT(url):

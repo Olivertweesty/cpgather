@@ -158,11 +158,11 @@ def TargetDiscovery(domain,wordlist):
 
     return unique_ips,uhosts
 
-def PortScanning(ips, domain, verbose):
+def PortScanning(ips, domain, verbose, ports):
     print "[*] Port Scanning phase started"
     if verbose:
         print "  + Running masscan against %s targets" %str(len(ips))
-    execMasscan(domain)
+    execMasscan(domain,ports)
     if verbose:
         print "  + Running nmap fingerprinting and scripts"
     execMton(domain)
@@ -233,11 +233,17 @@ if __name__ == "__main__":
     else:
         wordlist = SUBWL
 
+    if len(user_ports) > 0:
+        ports = user_ports
+    else:
+        ports="1-65535"
+
 
     ips,hosts = TargetDiscovery(user_domain,wordlist)
     if not user_noscan:
         if os.path.isfile(user_domain+".pickle") == False or os.path.getsize(user_domain+".pickle") == 0:
-            list_of_hostdict = PortScanning(ips, user_domain, user_verbose)
+
+            list_of_hostdict = PortScanning(ips, user_domain, user_verbose, ports)
             if list_of_hostdict is not False:
                 saveData(user_domain+".pickle",list_of_hostdict)
             else:
@@ -248,7 +254,7 @@ if __name__ == "__main__":
         host_dict=False
 
     if list_of_hostdict is not False:
-        #print("[*] webgrep https://github.com/LLazarek/webgrep.git")
+        #prgithub.com/LLazarek/webgrep.gitint("[*] webgrep https://github.com/LLazarek/webgrep.git")
         list_of_webservers_found = WebDiscovery(list_of_hostdict, user_domain)
     else:
         print("[*] Web discovery skipped (no open ports found)")
