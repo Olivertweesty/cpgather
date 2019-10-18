@@ -233,7 +233,7 @@ if __name__ == "__main__":
     else:
         wordlist = SUBWL
 
-    if len(user_ports) > 0:
+    if user_ports is not None:
         ports = user_ports
     else:
         ports="1-65535"
