@@ -12,7 +12,7 @@ def WayBackMachine(domain):
         hostnames = list()
         for item in jdata:
             proto, host, port = parseUrlProtoHostPort(item[0])
-            if "host" not in host:
+            if "host" not in host and len(host)>2:
                 hostnames.append(host)
         hostnames=list(set(hostnames))
         saveFile(domain + ".sub.wayback", hostnames)
@@ -21,5 +21,6 @@ def WayBackMachine(domain):
         hostnames=list()
         temp = readFile(domain + ".sub.wayback")
         for item in temp:
-            hostnames.append(item.rstrip("\n"))
+            if len(item) > 2:
+                hostnames.append(item.rstrip("\n"))
     return hostnames

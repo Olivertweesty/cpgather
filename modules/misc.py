@@ -4,14 +4,15 @@ import ipaddress
 import pickle
 import os
 from tldextract import extract
-
-
+from fqdn import FQDN
 try:
     from urllib.parse import urlparse
 except ImportError:
     from urlparse import urlparse
 
-
+def checkFqdn(val):
+    fqdn = FQDN(str(val))
+    return fqdn.is_valid
 
 def splitHostname(hname):
     try:
@@ -102,7 +103,7 @@ def getFullHostList(domain):
 
 def isGlobalIpv4(ipaddr):
     try:
-        ipObj = ipaddress.ip_address(unicode(ipaddr))
+        ipObj = ipaddress.ip_address(str(ipaddr))
     except:
         return False
     if ipObj.is_global and ipObj.version == 4:

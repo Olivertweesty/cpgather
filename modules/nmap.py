@@ -3,6 +3,16 @@
 
 import nmap
 
+def nmap_create():
+    return nmap.PortScanner()
+
+def nmap_LoadXmlObject(filename):
+    nm = nmap_create()
+    nxo = open(filename, "r")
+    xmlres = nxo.read()
+    nm.analyse_nmap_xml_scan(xmlres)
+    return nm
+
 def nmap_GetSinglePortState(target, proto, targetport):
 
     print("[*] nmap_GetSinglePortState")
@@ -15,7 +25,7 @@ def nmap_GetSinglePortState(target, proto, targetport):
     if proto == "tcp":
         NMAP_ARGUMENTS = "-sS "
 
-    nm = nmap.PortScanner()
+    nm = nmap_create()
     results = nm.scan(hosts=target, ports=str(targetport), arguments=NMAP_ARGUMENTS)
     hostresults = results['scan']
     if not hostresults:
@@ -41,7 +51,7 @@ def nmap_ExecuteNmapOnTargetList(domain, ports):
                      " -iL " + targetfile
 
 
-    nmObj = nmap.PortScanner()
+    nmObj = nmap_create()
     nmObj.scan(hosts="", ports=ports, arguments=NMAP_ARGUMENTS)
     xmlout = nmObj.get_nmap_last_output()
     xmlreportfile = projectname + ".nmap.xml"
@@ -62,7 +72,7 @@ def nmap_GetScriptData(nmapObj, host, proto, port, scriptname):
 def nmap_ShowPrettyReport(nmapObj):
     print("[*] Nmap report")
     for ip in nmapObj.all_hosts():
-        print "[*] Host: " + ip
+        print("[*] Host: " + ip)
         openports = nmapObj[ip]['tcp'].keys()
         for port in openports:
             service_details = nmapObj[ip]['tcp'][port]

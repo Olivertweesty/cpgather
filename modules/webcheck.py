@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
+import requests
+import urllib3
+from multiprocessing import Pool
+import time
+from lxml import html
 from PIL import Image
 import pytesseract
 import cv2
@@ -8,11 +12,17 @@ import os
 from modules.photon import execPhoton, parsePhoton
 from modules.massdns import parseMassdnsStruct
 from reppy.robots import Robots
+from misc import saveFile
+from wappalyzer import execWappalyzer
 
-#dirsearch/dirsearch.py -b -t 100 -e php,asp,aspx,jsp,html,zip,jar,sql -x 500,503 -r -w $WORDLIST_PATH/raft-large-words.txt -u $url --plain-text-report=$DIR_PATH/dirsearch/$fqdn.tmp
+try:
+    from urllib.parse import urlparse
+except ImportError:
+    from urlparse import urlparse
 
 
 
+scrapdata = list()
 
 
 
@@ -35,102 +45,57 @@ def findJWT(url):
     print response.headers
     return jwtvalue
 
-# nao temos nmapobj
-def FindWebFromNmapObj(nmapObj,list_of_hosts_found):
-    print "[*] FindWeb"
-    weblist = list()
+# verificar hostnames nos certificados por ip
+# jenkins exploit: finder:
+# https://ravirajput.github.io/recon_by_armaanpathan12345/#/9
 
+
+def FindWebFromList(nmapObj,domain):
+    # https://github.com/arbazkiraak/certasset/blob/master/subs_cert.py
+    # webgrep https://github.com/LLazarek/webgrep.git")
+
+    massdnsstruct = parseMassdnsStruct(domain)
+    webhosts = list()
     for ip in nmapObj.all_hosts():
+
+        vhostlist = getHostnameFromIp(massdnsstruct,ip)
         openports = nmapObj[ip]['tcp'].keys()
         for port in openports:
             service_details = nmapObj[ip]['tcp'][port]
-            if "http" in service_details['name']:
-                proto = "http"
-                try:
-                    scripts = service_details['script']
-                    for script_name in scripts:
-                        if script_name == "ssl-cert":
-                            proto = "https"
-                except:
-                    pass
+            try:
+                if service_details['script']:
+                    havetls = True
+            except:
+                havetls = False
+            if havetls and "http" in service_details['name']:
+                if port == "443":
+                    webhosts.append("https://" + ip + "/")
+                else:
+                webhosts.append("https://" + ip + ":" + str(port) + "/")
+                if len(vhostlist)>0:
+                    for vhost in vhostlist:
+                        if port == "443":
+                            webhosts.append("https://" + str(vhost) + "/")
+                        else:
+                            webhosts.append("https://" + str(vhost) + ":" + str(port) + "/")
 
-                if len(list_of_hosts_found) > 0:
-                    for item in list_of_hosts_found:
-                        if ip in item:
-                            vhost = item.split(":")[0]
-                            weblist.append(proto + "://" + vhost + ":" + str(port))
-                weblist.append(proto + "://" + ip + ":" + str(port))
+            if not havetls and "http" in service_details['name']:
+                if port == "80":
+                    webhosts.append("http://" + ip + "/")
+                else:
+                    webhosts.append("http://" + ip + ":" + str(port) + "/")
+                if len(vhostlist)>0:
+                    for vhost in vhostlist:
+                        if port == "80":
+                            webhosts.append("http://" + str(vhost) + "/")
+                        else:
+                            webhosts.append("http://" + str(vhost) + ":" + str(port) + "/")
 
-    weblist = sort_uniq(weblist)
-    return weblist
-
-
-def FindWebFromList(list_of_host_dict,domain):
-   return False
-
-
-'''
-{'tls': False,
-'name': u'http',
-'ipaddr': u'104.27.150.118',
-'svc_script': u'fingerprint-strings: AAAAAAA\
-                http-headers: AAAAAA',
-'state': u'open',
-'host_script': '',
-'banner': u'cloudflare  ',
-'port': u'80'
-}
-
-'''
-
-def FindWebFromList_old(list_of_host_dict,list_of_hosts_found):
-    web = list()
-    for host in list_of_host_dict:
-        srv=dict()
-
-        found=False
-        # we have http[s]-alt when nmap can't probe due to firewall restrictions.
-        # so it will assume http[s] to standard 80 443 ports, and http[s]-alt for non standard ports.
-
-        if host['name'] == "http" or host['name'] == "http-alt":
-            srv['proto'] = "http://"
-            srv['ipaddr'] = host['ipaddr']
-            srv['port'] = host['port']
-            found=True
-
-        if host['name'] == "https" or host['name'] == "https-alt":
-            srv['proto'] = "https://"
-            srv['ipaddr'] = host['ipaddr']
-            srv['port'] = host['port']
-            found = True
-
-        if found:
-            web.append(srv)
-    return web
+        webhosts = list(set(webhosts))
+        saveFile(domain+".web",webhosts)
+    return webhosts
 
 
-def goSpideURL(domain, target):
-
-    # here, we can set burpsuite as our proxy so the crawling phase can feed the sitemap generation and passive scanning
-    # this is designed to help us with further investigation/analysis using burp.
-    #
-    #########
-
-    # skip when:
-    # step 1 - check if we have blank page
-    # step 2 - check if we have blocking page
-    # step 3 - 301 to different vhost (check if that new vhost is present in .hosts and .webservers file (new sub?) )
-
-    savedir = domain + ".crawler"
-    execPhoton(target, savedir)
-    found = parsePhoton(target, savedir)
-
-    return found
-
-def getWebserversRawFile(domain):
-    with open(domain + ".webservers", "r") as f:
-        content = f.readlines()
-    return content
 
 
 def checkWebDefault():
@@ -191,3 +156,89 @@ def checkWebDefault():
             os.remove(filename)
         else:
             print "nao eh arquivo??"
+
+
+
+
+
+
+def ParseWebResponse(urlstruct):
+    global scrapdata
+    if valid_url is not False:
+        '''
+        print("  + url: " + str(urlstruct['url']))
+        for a in urlstruct['a']:
+            print("  + a: " + str(a))
+        for js in urlstruct['js']:
+            print("  + js: " + str(js))
+
+        print("="*100)
+        '''
+        scrapdata.append(urlstruct)
+
+
+def FetchWebContent(url):
+    ret = dict()
+    try:
+        requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS = 'ALL'         # avoid ssl errors
+        requests.packages.urllib3.contrib.pyopenssl.extract_from_urllib3()  # avoid ssl errors
+        response = requests.get(url, verify=False, timeout=5)               # verify=False avoid ssl errors
+        webpage = html.fromstring(response.content)
+        ret['url'] = url
+        ret['a'] = webpage.xpath('//a/@href')
+        ret['js'] = webpage.xpath('//script/@src')
+        ret['headers'] = response.headers
+        out,err = execWappalyzer(url)
+        ret['stack'] = out
+
+    except:
+        return False
+    else:
+        return ret
+
+def ContentSecurityPolicy(urldata):
+
+    for urldata in scrapdata:
+        print(str(urldata['url']))
+        h = urldata['headers']
+        for k, v in h.items():
+            if k ==  "Content-Security-Policy" or k == "X-Content-Security-Policy":
+
+
+
+
+
+
+
+
+
+def ScrapWeb(webhosts):
+    global scrapdata
+    urllib3.disable_warnings()
+    p = Pool(processes=100)
+    for url in webhosts:
+        p.apply_async(FetchWebContent, (url,), callback=ParseWebResponse)
+    p.close()
+    p.join()
+
+    for urldata in scrapdata:
+        print(str(urldata['url']))
+        h = urldata['headers']
+        for k, v in h.items():
+            print("  + %s: %s" % (k, v))
+
+        '''
+        for a in each['a']:
+            print(str(a))
+        for js in each['js']:
+            print("\t"+str(js))
+
+        '''
+
+    return True
+
+
+
+
+
+

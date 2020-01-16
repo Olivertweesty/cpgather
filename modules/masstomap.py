@@ -5,8 +5,6 @@ import subprocess
 import xml.dom.minidom
 from base64 import b64encode
 
-
-
 def execMton(domain):
 
     workingdir = os.getcwd()
