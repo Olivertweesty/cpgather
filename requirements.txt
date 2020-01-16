@@ -7,5 +7,9 @@ tldextract
 pytesseract
 opencv-python
 lxml
-# also using
-# pickle
+pyopenssl
+fqdn
+ipaddress
+Levenshtein
+dnspython
+reppy

@@ -53,3 +53,15 @@ def parseMassdnsStruct(domain):
             aux.append(hosts)
 
     return aux
+
+
+def getAllipsFor(url):
+    ips = list()
+    url = url.rstrip("/")
+    host, dom, tld = splitHostname(url)
+    ipdb = parseMassdnsStruct(dom + "." + tld)
+    for line in ipdb:
+        if url == line['vhost']:
+            ips.append(line['ipaddr'])
+
+    return ips

@@ -163,35 +163,34 @@ def PortScanning(ips, domain, verbose, ports):
     if verbose:
         print "  + Running masscan against %s targets" %str(len(ips))
     execMasscan(domain,ports)
+
     if verbose:
         print "  + Running nmap fingerprinting and scripts"
     execMton(domain)
-    hosts = parseNmapXML(domain + ".nmap.xml")
+    #hosts = parseNmapXML(domain + ".nmap.xml")
+    nmapObj = nmap_LoadXmlObject(domain + ".nmap.xml")
 
-    return hosts
+    return nmapObj
 
 
-def WebDiscovery(host_dict, domain):
+def WebDiscovery(nmapObj, domain):
 
     print "[*] Web Discovery phase has started"
-    if host_dict==False:
-        print("[x] Can't proceed without portscanning...")
-        sys.exit(1)
+    webhosts = FindWebFromList(nmapObj,domain)
+    print "[*] Scrapping first page of each webhost"
+    ScrapWeb(webhosts)
 
-    httplist = FindWebFromList(host_dict,domain)
+
+    print "[*] Web Stack identification via (Wappalyzer)"
+
 
 
     '''
-        identificar todos os hosts que tem serviço web identificado (nmapObj)
-        verificar quais sao os vhosts para o ip
-        verificar se a porta está http ou https
-        montar URI proto + vhost|ip + port
         salvar em arquivo .http
         
         rodar wappalyzer
         identificar quais tem tela padrao do webserver
         eyewitness
-        waybackurls
         dirsearch ou ffuf
         photon crawler 2 niveis
         linkfinder ou outra ferramenta pra pegar todos os arquivos javascript, parsear e descobrir novas urls
@@ -242,20 +241,18 @@ if __name__ == "__main__":
     ips,hosts = TargetDiscovery(user_domain,wordlist)
     if not user_noscan:
         if os.path.isfile(user_domain+".pickle") == False or os.path.getsize(user_domain+".pickle") == 0:
-
-            list_of_hostdict = PortScanning(ips, user_domain, user_verbose, ports)
-            if list_of_hostdict is not False:
-                saveData(user_domain+".pickle",list_of_hostdict)
+            nmapObj = PortScanning(ips, user_domain, user_verbose, ports)
+            if nmapObj is not False:
+                saveData(user_domain+".pickle",nmapObj)
             else:
                 print("  + no open ports found")
         else:
-            list_of_hostdict=loadData(user_domain+".pickle")
+            nmapObj=loadData(user_domain+".pickle")
     else:
-        host_dict=False
+        nmapObj=False
 
-    if list_of_hostdict is not False:
-        #prgithub.com/LLazarek/webgrep.gitint("[*] webgrep https://github.com/LLazarek/webgrep.git")
-        list_of_webservers_found = WebDiscovery(list_of_hostdict, user_domain)
+    if nmapObj is not False:
+        list_of_webservers_found = WebDiscovery(nmapObj, user_domain)
     else:
         print("[*] Web discovery skipped (no open ports found)")
     S3Discovery(user_domain, user_verbose)

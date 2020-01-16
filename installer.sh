@@ -209,15 +209,10 @@ install_wordlists(){
 #AJUN_GIT="https://github.com/s0md3v/Arjun.git"  # NEEDS PYTHON 3.4
 
 echo "[*] Installing gcc make and pcap"
-apt-get -y install git gcc make libpcap-dev zlib1g-dev libjpeg-dev >/dev/null 2>/dev/null
+apt-get -y install git gcc make libpcap-dev zlib1g-dev libjpeg-dev zlib1g-dev libjpeg-dev python-opencv python-lxml >/dev/null 2>/dev/null
 echo "[*] Installing python dependencies"
 pip install -r requirements.txt >/dev/null 2>/dev/null
 
-if [[ $HOSTTYPE == "aarch64" ]]
-then
-    apt-get install zlib1g-dev libjpeg-dev python-opencv python-lxml
-
-fi
 
 install_photon
 install_gobuster
@@ -230,7 +225,7 @@ install_subfinder
 install_masstomap
 install_linkfinder
 install_s3scanner
-install_wordlists
+#install_wordlists
 cd $WDIR
 echo "  + DONE"
 
