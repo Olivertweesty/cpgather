@@ -16,7 +16,7 @@ from modules.subfinder import execSubfinder, parseSubfinder
 from modules.massdns import execMassdns, parseMassdns
 from modules.masscan import execMasscan
 from modules.masstomap import execMton
-from modules.masstomap import parseNmapXML
+from modules.nmap import nmap_LoadXmlObject
 from modules.misc import loadData, saveData, saveFile, readFile
 from modules.s3scanner import execS3Scanner
 from modules.waybackmachine import WayBackMachine
