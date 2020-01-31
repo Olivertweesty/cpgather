@@ -3,7 +3,6 @@
 
 import nmap
 
-
 def nmap_LoadXmlObject(filename):
     nm = nmap.PortScanner()
     nxo = open(filename, "r")
