@@ -196,6 +196,7 @@ def FetchWebContent(url):
     else:
         return ret
 
+'''
 def ContentSecurityPolicy(urldata):
 
     for urldata in scrapdata:
@@ -204,7 +205,7 @@ def ContentSecurityPolicy(urldata):
         for k, v in h.items():
             if k ==  "Content-Security-Policy" or k == "X-Content-Security-Policy":
 
-
+'''
 
 
 
