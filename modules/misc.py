@@ -103,7 +103,7 @@ def getFullHostList(domain):
 
 def isGlobalIpv4(ipaddr):
     try:
-        ipObj = ipaddress.ip_address(str(ipaddr))
+        ipObj = ipaddress.ip_address(unicode(ipaddr))
     except:
         return False
     if ipObj.is_global and ipObj.version == 4:
