@@ -71,7 +71,7 @@ def FindWebFromList(nmapObj,domain):
                 if port == "443":
                     webhosts.append("https://" + ip + "/")
                 else:
-                webhosts.append("https://" + ip + ":" + str(port) + "/")
+                    webhosts.append("https://" + ip + ":" + str(port) + "/")
                 if len(vhostlist)>0:
                     for vhost in vhostlist:
                         if port == "443":
