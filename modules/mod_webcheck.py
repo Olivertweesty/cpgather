@@ -9,11 +9,11 @@ from PIL import Image
 import pytesseract
 import cv2
 import os
-from modules.photon import execPhoton, parsePhoton
-from modules.massdns import parseMassdnsStruct
+from modules.mod_photon import execPhoton, parsePhoton
+from modules.mod_massdns import parseMassdnsStruct
 from reppy.robots import Robots
 from misc import saveFile
-from wappalyzer import execWappalyzer
+from mod_wappalyzer import execWappalyzer
 
 try:
     from urllib.parse import urlparse

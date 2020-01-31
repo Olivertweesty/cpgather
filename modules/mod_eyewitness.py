@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import os
-from modules.settings import DOCUMENT_ROOT
+from modules.mod_settings import DOCUMENT_ROOT
 import subprocess
 
 

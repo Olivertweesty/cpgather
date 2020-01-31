@@ -10,18 +10,18 @@ import argparse
 import sys
 import os
 
-from modules.amass import execAmass, parseAmass
-from modules.sublist3r import execSublist3r, parseSublist3r
-from modules.subfinder import execSubfinder, parseSubfinder
-from modules.massdns import execMassdns, parseMassdns
-from modules.masscan import execMasscan
+from modules.mod_amass import execAmass, parseAmass
+from modules.mod_sublist3r import execSublist3r, parseSublist3r
+from modules.mod_subfinder import execSubfinder, parseSubfinder
+from modules.mod_massdns import execMassdns, parseMassdns
+from modules.mod_masscan import execMasscan
 from modules.masstomap import execMton
-from modules.nmap import nmap_LoadXmlObject
+from modules.mod_nmap import nmap_LoadXmlObject
 from modules.misc import loadData, saveData, saveFile, readFile
-from modules.s3scanner import execS3Scanner
-from modules.waybackmachine import WayBackMachine
-from modules.forwarddns import parseForwardDnsFile
-from modules.webcheck import FindWebFromList
+from modules.mod_s3scanner import execS3Scanner
+from modules.mod_waybackmachine import WayBackMachine
+from modules.mod_forwarddns import parseForwardDnsFile
+from modules.mod_webcheck import FindWebFromList
 
 SUBWL="/usr/share/wordlists/SecLists/Discovery/DNS/bitquark-subdomains-top100000.txt"   # Wordlist for subdomain bruteforcing
 RESOLVERS="/usr/share/massdns/lists/resolvers.txt"                                      # List of open DNS we can use to resolve / brute dns subdomains
@@ -41,7 +41,7 @@ OK - decobrir destas portas abertas, quais sao webservers/http - ok
 ripar - we have cloudfront cnames? cloudfrunt! git clone https://github.com/disloops/cloudfrunt.git
 OK - rodar eyewitness para tirar screenshot de todos os webservers encontrados e publicar - ok
 OK - rodar wappalyzer pra identificar stack das aplicacoes - ok
- - rodar photon-crawler (python photon.py -u https://teslamotors.com -l 3 -t 4 --wayback -o teste)
+ - rodar photon-crawler (python mod_photon.py -u https://teslamotors.com -l 3 -t 4 --wayback -o teste)
  - rodar cralwer para validar URLS mapeaveis na aplicacao
     - pegar todos os arquivos JS e jogar no LinkFinder para encontrar endpoints
  - rodar gobuster e descobrir diretorios nestes apps (wordlists de common webapps, common dirs, robotsdisallowed, minha custom)

@@ -68,7 +68,7 @@ def parseUrlProtoHostPort(urlstr):
 
 def getFullHostList(domain):
     try:
-        from modules.amass import parseAmassStruct
+        from modules.mod_amass import parseAmassStruct
     except:
         pass
     hosts_file = readFile(domain+".hosts")

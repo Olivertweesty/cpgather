@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import subprocess
 import os
-from modules.linkfinder import execLinkFinder, parseLinkFinder
+from modules.mod_linkfinder import execLinkFinder, parseLinkFinder
 
 def getPhotonRawFile(filename):
     with open(filename, "r") as f:
@@ -41,7 +41,7 @@ def execPhoton(target,savedir):
         os.mkdir(savedir)
         os.mkdir(reportlocation)
 
-    p = subprocess.Popen(['/usr/share/photon/photon.py', '-u', target, '-o',reportlocation ,'-t','4', '--level','1','--wayback' ],stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    p = subprocess.Popen(['/usr/share/photon/mod_photon.py', '-u', target, '-o',reportlocation ,'-t','4', '--level','1','--wayback' ],stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     out, err = p.communicate()
 
     return out, err

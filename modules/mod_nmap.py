@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import nmap
+import mod_nmap
 
 
 def nmap_LoadXmlObject(filename):
-    nm = nmap.PortScanner()
+    nm = mod_nmap.PortScanner()
     nxo = open(filename, "r")
     xmlres = nxo.read()
     nm.analyse_nmap_xml_scan(xmlres)
@@ -23,7 +23,7 @@ def nmap_GetSinglePortState(target, proto, targetport):
     if proto == "tcp":
         NMAP_ARGUMENTS = "-sS "
 
-    nm = nmap.PortScanner()
+    nm = mod_nmap.PortScanner()
     results = nm.scan(hosts=target, ports=str(targetport), arguments=NMAP_ARGUMENTS)
     hostresults = results['scan']
     if not hostresults:

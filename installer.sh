@@ -16,7 +16,7 @@ install_photon() {
     git clone https://github.com/s0md3v/Photon.git photon >/dev/null 2>/dev/null
     pip install -r photon/requirements.txt >/dev/null 2>/dev/null
     echo "#!/bin/bash" > /usr/bin/photon
-    echo "python3 /usr/share/photon/photon.py \$@" >> /usr/bin/photon
+    echo "python3 /usr/share/photon/mod_photon.py \$@" >> /usr/bin/photon
     chmod 755 /usr/bin/photon
     echo "  + DONE"
 }
@@ -160,7 +160,7 @@ install_linkfinder() {
     git clone https://github.com/GerbenJavado/LinkFinder.git linkfinder >/dev/null 2>/dev/null
     pip install jsbeautifier argparse >/dev/null 2>/dev/null
     echo "#!/bin/bash" >/usr/bin/linkfinder
-    echo "python /usr/share/linkfinder/linkfinder.py \$@" >> /usr/bin/linkfinder
+    echo "python /usr/share/linkfinder/mod_linkfinder.py \$@" >> /usr/bin/linkfinder
     chmod 755 /usr/bin/linkfinder
     echo "  + DONE"
 
@@ -177,7 +177,7 @@ install_s3scanner(){
     pip install -r requirements.txt >/dev/null 2>/dev/null
     apt-get -y install awscli >/dev/null 2>/dev/null
     echo "#!/bin/bash" >/usr/bin/s3scanner
-    echo "python /usr/share/s3scanner/s3scanner.py \$@" >> /usr/bin/s3scanner
+    echo "python /usr/share/s3scanner/mod_s3scanner.py \$@" >> /usr/bin/s3scanner
     chmod 755 /usr/bin/s3scanner
     echo "  + NOTE: you must configure your awscli with your own aws key by using"
     echo "  + command: aws configure"
