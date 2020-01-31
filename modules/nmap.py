@@ -7,7 +7,7 @@ def nmap_create():
     return nmap.PortScanner()
 
 def nmap_LoadXmlObject(filename):
-    nm = nmap_create()
+    nm = nmap.nmap_create()
     nxo = open(filename, "r")
     xmlres = nxo.read()
     nm.analyse_nmap_xml_scan(xmlres)
