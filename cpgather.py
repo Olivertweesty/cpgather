@@ -21,7 +21,7 @@ from modules.misc import loadData, saveData, saveFile, readFile
 from modules.mod_s3scanner import execS3Scanner
 from modules.mod_waybackmachine import WayBackMachine
 from modules.mod_forwarddns import parseForwardDnsFile
-from modules.mod_webcheck import FindWebFromList
+from modules.mod_webcheck import FindWebFromList, ScrapWeb
 
 SUBWL="/usr/share/wordlists/SecLists/Discovery/DNS/bitquark-subdomains-top100000.txt"   # Wordlist for subdomain bruteforcing
 RESOLVERS="/usr/share/massdns/lists/resolvers.txt"                                      # List of open DNS we can use to resolve / brute dns subdomains

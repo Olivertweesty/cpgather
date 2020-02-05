@@ -218,9 +218,6 @@ def ContentSecurityPolicy(urldata):
 
 
 
-
-
-
 def ScrapWeb(webhosts):
     global scrapdata
     urllib3.disable_warnings()
