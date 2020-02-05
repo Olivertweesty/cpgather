@@ -49,6 +49,14 @@ def findJWT(url):
 # jenkins exploit: finder:
 # https://ravirajput.github.io/recon_by_armaanpathan12345/#/9
 
+def getHostnameFromIp(massdnsstruct,ip):
+    host_ips = list()
+    for node in massdnsstruct:
+        if str(node['ipaddr'].rstrip()) == str(ip.rstrip()):
+            host_ips.append(str(node['vhost'].rstrip()))
+    return host_ips
+
+
 
 def FindWebFromList(nmapObj,domain):
     # https://github.com/arbazkiraak/certasset/blob/master/subs_cert.py

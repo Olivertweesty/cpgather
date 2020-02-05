@@ -13,3 +13,4 @@ ipaddress
 Levenshtein
 dnspython
 reppy
+python-nmap
