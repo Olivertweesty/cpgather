@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import nmap
+from nmap import PortScanner
 
 def nmap_LoadXmlObject(filename):
-    nm = nmap.PortScanner()
+    nm = PortScanner()
     nxo = open(filename, "r")
     xmlres = nxo.read()
     nm.analyse_nmap_xml_scan(xmlres)
