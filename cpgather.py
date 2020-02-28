@@ -181,6 +181,7 @@ def WebDiscovery(nmapObj, domain):
     ScrapWeb(webhosts)
 
 
+
     print "[*] Web Stack identification via (Wappalyzer)"
 
 

@@ -219,27 +219,12 @@ def ContentSecurityPolicy(urldata):
 
 
 def ScrapWeb(webhosts):
-    global scrapdata
-    urllib3.disable_warnings()
-    p = Pool(processes=100)
-    for url in webhosts:
-        p.apply_async(FetchWebContent, (url,), callback=ParseWebResponse)
-    p.close()
-    p.join()
 
-    for urldata in scrapdata:
-        print(str(urldata['url']))
-        h = urldata['headers']
-        for k, v in h.items():
-            print("  + %s: %s" % (k, v))
+    #for url in webhosts:
 
-        '''
-        for a in each['a']:
-            print(str(a))
-        for js in each['js']:
-            print("\t"+str(js))
 
-        '''
+
+
 
     return True
 
