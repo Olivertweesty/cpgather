@@ -6,16 +6,23 @@ import subprocess
 def fixSublist3r(domain):
     found = list()
     if os.path.isfile(domain + ".sublist3r"):
-        f = open(domain+".sublist3r")
+        f = open(domain + ".sublist3r")
         content = f.readlines()
         for item in content:
             if '<BR>' in item:
-                hm = len(item.split('<BR>'))
-               for index in range(0,hm,1):
-                   found.append(item[index].rstrip("\n"))
-            found.append(item.rstrip("\n"))
+                for token in item.split('<BR>'):
+                    if len(token) > 0:
+                        found.append(token.rstrip("\n"))
+            else:
+                found.append(item.rstrip("\n"))
+    f.close()
+    f = open(domain + ".sublist3r", "w")
+    for item in found:
+        f.write(item+"\n")
+    f.close()
 
-    return True
+    return found
+
 
 def execSublist3r(domain):
     if os.path.isfile(domain + ".sublist3r") == False or os.path.getsize(domain + ".sublist3r") == 0:
