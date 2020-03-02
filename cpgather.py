@@ -171,11 +171,16 @@ def PortScanning(ips, domain, verbose, ports):
     execMton(domain)
     return True
 
-
 def WebDiscovery(nmapObj, domain):
     print "[*] Web Discovery phase has started"
-    webhosts = FindWeb(nmapObj,domain)
-    saveFile(domain + ".web", webhosts)
+    if os.path.isfile(domain+".web") == False or os.path.getsize(domain+".web") == 0:
+        saveFile(domain + ".web", webhosts)
+    else:
+        webhosts=list()
+        wfilecontent = readFile(domain + ".web")
+        for item in wfilecontent.split("\n"):
+            webhosts.append(item.rstrip("\n"))
+        saveFile(domain + ".web", webhosts)
 
     print "[*] Web Stack identification via (Wappalyzer)"
     for webtarget in webhosts:
