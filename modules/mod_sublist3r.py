@@ -15,7 +15,8 @@ def fixSublist3r(domain):
                         found.append(token.rstrip("\n"))
             else:
                 found.append(item.rstrip("\n"))
-    f.close()
+        f.close()
+
     f = open(domain + ".sublist3r", "w")
     for item in found:
         f.write(item+"\n")
