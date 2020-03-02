@@ -17,11 +17,13 @@ from modules.mod_massdns import execMassdns, parseMassdns
 from modules.mod_masscan import execMasscan
 from modules.masstomap import execMton
 from modules.mod_nmap import nmap_LoadXmlObject
-from modules.misc import loadData, saveData, saveFile, readFile
+from modules.misc import saveFile, readFile
 from modules.mod_s3scanner import execS3Scanner
 from modules.mod_waybackmachine import WayBackMachine
 from modules.mod_forwarddns import parseForwardDnsFile
-from modules.mod_webcheck import FindWebFromList, ScrapWeb
+from modules.mod_webcheck import FindWeb
+from mod_wappalyzer import execWappalyzer
+
 
 SUBWL="/usr/share/wordlists/SecLists/Discovery/DNS/bitquark-subdomains-top100000.txt"   # Wordlist for subdomain bruteforcing
 RESOLVERS="/usr/share/massdns/lists/resolvers.txt"                                      # List of open DNS we can use to resolve / brute dns subdomains
@@ -167,42 +169,18 @@ def PortScanning(ips, domain, verbose, ports):
     if verbose:
         print "  + Running nmap fingerprinting and scripts"
     execMton(domain)
-    #hosts = parseNmapXML(domain + ".nmap.xml")
-    nmapObj = nmap_LoadXmlObject(domain + ".nmap.xml")
-
-    return nmapObj
+    return True
 
 
 def WebDiscovery(nmapObj, domain):
-
     print "[*] Web Discovery phase has started"
-    webhosts = FindWebFromList(nmapObj,domain)
-    print "[*] Scrapping first page of each webhost"
-    ScrapWeb(webhosts)
-
-
+    webhosts = FindWeb(nmapObj,domain)
+    saveFile(domain + ".web", webhosts)
 
     print "[*] Web Stack identification via (Wappalyzer)"
-
-
-
-    '''
-        salvar em arquivo .http
-        
-        rodar wappalyzer
-        identificar quais tem tela padrao do webserver
-        eyewitness
-        dirsearch ou ffuf
-        photon crawler 2 niveis
-        linkfinder ou outra ferramenta pra pegar todos os arquivos javascript, parsear e descobrir novas urls
-         + photon nas urls novas com 2 niveis
-         + photon nas urls do dirsearc/ffuf
-        identificar webapps conhecidas no report do crawler (fckeditor, jqueryupload, swfupload, etc)
-        identificar todos os recursos carregados de URLS externas de cada página, e salvar links quebrados
-        gitrob pra verificar .git aberto!
-         
-    '''
-
+    for webtarget in webhosts:
+        out,err = execWappalyzer(webtarget)
+        appendFile(domain+".wapp",out)
     return True
 
 def S3Discovery(domain,verbose):
@@ -241,22 +219,21 @@ if __name__ == "__main__":
 
     ips,hosts = TargetDiscovery(user_domain,wordlist)
     if not user_noscan:
-        if os.path.isfile(user_domain+".pickle") == False or os.path.getsize(user_domain+".pickle") == 0:
-            nmapObj = PortScanning(ips, user_domain, user_verbose, ports)
-            if nmapObj is not False:
-                saveData(user_domain+".pickle",nmapObj)
-            else:
-                print("  + no open ports found")
-        else:
-            nmapObj=loadData(user_domain+".pickle")
-    else:
-        nmapObj=False
+        if os.path.isfile(user_domain+".nmap.xml") == False or os.path.getsize(user_domain+".nmap.xml") == 0:
+            PortScanning(ips, user_domain, user_verbose, ports)
+        nmapObj = nmap_LoadXmlObject(domain + ".nmap.xml")
 
     if nmapObj is not False:
         list_of_webservers_found = WebDiscovery(nmapObj, user_domain)
     else:
         print("[*] Web discovery skipped (no open ports found)")
     S3Discovery(user_domain, user_verbose)
+    print("[*] You're good to go! ")
+    print("[*] Recommendation:")
+    print("  + Spider every page")
+    print("  + Subjs + linkfinder")
+    print("  + ffuf !")
+
 
 
 
