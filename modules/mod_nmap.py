@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from nmap import PortScanner
+import nmap
 
 def nmap_LoadXmlObject(filename):
-    nm = PortScanner()
+    nm = nmap.PortScanner()
     nxo = open(filename, "r")
     xmlres = nxo.read()
     nm.analyse_nmap_xml_scan(xmlres)
@@ -38,7 +38,7 @@ def nmap_ExecuteNmapOnTargetList(domain, ports):
     targetfile = domain+".ips"
 
     NMAP_SCRIPTS = 'http-title,http-server-header,http-methods,' \
-                   'ssl-cert,ssl-enum-ciphers,' \
+                   'ssl-cert,ssl-date,' \
                    'banner'
 
     NMAP_ARGUMENTS = "--privileged -Pn --open -f -sV " \
@@ -48,7 +48,7 @@ def nmap_ExecuteNmapOnTargetList(domain, ports):
                      " -iL " + targetfile
 
 
-    nmObj = nmap_create()
+    nmObj = nmap.PortScanner()
     nmObj.scan(hosts="", ports=ports, arguments=NMAP_ARGUMENTS)
     xmlout = nmObj.get_nmap_last_output()
     xmlreportfile = projectname + ".nmap.xml"
