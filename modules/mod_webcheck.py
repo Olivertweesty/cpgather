@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from modules.mod_massdns import parseMassdnsStruct
+from modules.misc import sort_uniq
 
 try:
     from urllib.parse import urlparse
