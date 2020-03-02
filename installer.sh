@@ -6,6 +6,14 @@
 
 export WDIR=$(pwd)
 
+install_pynmap(){
+    pip uninstall python-nmap
+    cd /tmp
+    git clone https://github.com/dogasantos/python-nmap.git
+    cd python-nmap
+    python setup.py install
+}
+
 install_photon() {
     if [ -d  /usr/share/photon ]
     then
@@ -226,6 +234,7 @@ install_masstomap
 install_linkfinder
 install_s3scanner
 #install_wordlists
+install_pynmap
 cd $WDIR
 echo "  + DONE"
 
