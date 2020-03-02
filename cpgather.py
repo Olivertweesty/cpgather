@@ -22,7 +22,7 @@ from modules.mod_s3scanner import execS3Scanner
 from modules.mod_waybackmachine import WayBackMachine
 from modules.mod_forwarddns import parseForwardDnsFile
 from modules.mod_webcheck import FindWeb
-from mod_wappalyzer import execWappalyzer
+from modules.mod_wappalyzer import execWappalyzer
 
 
 SUBWL="/usr/share/wordlists/SecLists/Discovery/DNS/bitquark-subdomains-top100000.txt"   # Wordlist for subdomain bruteforcing
