@@ -10,6 +10,17 @@ try:
 except ImportError:
     from urlparse import urlparse
 
+def uniq(listval):
+    last = object()
+    for item in listval:
+        if item == last:
+            continue
+        yield item
+        last = item
+
+def sort_uniq(listval):
+    return list(uniq(sorted(listval)))
+
 def checkFqdn(val):
     fqdn = FQDN(str(val))
     return fqdn.is_valid
@@ -36,6 +47,10 @@ def saveFile(filename,content):
     with open(filename, "w") as h:
         for item in content:
             h.write(item + "\n")
+
+def appendFile(filename,content):
+    with open(filename, "a") as h:
+        h.write(content)
 
 def readFile(filename):
     if os.path.isfile(filename) == False:
