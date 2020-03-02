@@ -177,11 +177,7 @@ def WebDiscovery(nmapObj, domain):
         webhosts=FindWeb(domain, nmapObj)
         saveFile(domain + ".web", webhosts)
     else:
-        webhosts=list()
-        wfilecontent = readFile(domain + ".web")
-        for item in wfilecontent.split("\n"):
-            webhosts.append(item.rstrip("\n"))
-        saveFile(domain + ".web", webhosts)
+        webhosts = readFile(domain + ".web")
 
     print "[*] Web Stack identification via (Wappalyzer)"
     for webtarget in webhosts:
