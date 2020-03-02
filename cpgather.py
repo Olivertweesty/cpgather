@@ -174,6 +174,7 @@ def PortScanning(ips, domain, verbose, ports):
 def WebDiscovery(nmapObj, domain):
     print "[*] Web Discovery phase has started"
     if os.path.isfile(domain+".web") == False or os.path.getsize(domain+".web") == 0:
+        webhosts=FindWeb(domain, nmapObj)
         saveFile(domain + ".web", webhosts)
     else:
         webhosts=list()
