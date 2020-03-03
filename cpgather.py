@@ -184,8 +184,8 @@ def WebDiscovery(nmapObj, domain):
     for item in list_of_webstack:
         #appendFile(domain+".web." + str(item['status']) + ".txt", item['url'])
         print(type(item))
-        for k,v in item.items():
-            print(str(k) +" <===> "+ str(v))
+        #for k,v in item.items():
+        #    print(str(k) +" <===> "+ str(v))
 
 
         print("=" * 100)
