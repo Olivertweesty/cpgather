@@ -179,16 +179,14 @@ def WebDiscovery(nmapObj, domain):
 
     print "[*] Web Stack identification via (Wappalyzer)"
     list_of_webstack = RetrieveWebContent(webhosts)
-    print(len(list_of_webstack))
     list_of_webstack = wappFormat(list_of_webstack)
-    print(len(list_of_webstack))
 
     for item in list_of_webstack:
         #appendFile(domain+".web." + str(item['status']) + ".txt", item['url'])
-        print(item['status'])
-        print(item['url'])
-        print("Headers: " + str(len(item['status'])))
-        print("Webapps: " + str(len(item['stack'])))
+        for k,v in item.items():
+            print(k,v)
+        #print("Headers: " + str(len(item['status'])))
+        #print("Webapps: " + str(len(item['stack'])))
 
         print("=" * 100)
         # appendFile("starbucks.com.web." + str(item['status']) + ".txt", item['url'])
