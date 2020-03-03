@@ -4,12 +4,10 @@ validators
 argparse
 pillow
 tldextract
-pytesseract
-opencv-python
+#pytesseract
 lxml
 pyopenssl
 fqdn
 ipaddress
-Levenshtein
 dnspython
-reppy
+BeautifulSoup
