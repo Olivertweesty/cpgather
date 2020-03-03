@@ -8,7 +8,6 @@ import requests
 from urllib3.exceptions import InsecureRequestWarning
 import json
 from bs4 import BeautifulSoup
-import time
 try:
     from urllib import unquote
 except:
@@ -65,24 +64,24 @@ def FindWeb(domain, nmapObj):
 def wappFormat(wappObj):
     final_content = list()
     for each in wappObj:
+        js = list()
         ahref = list()
         a = dict()
-        js = list()
         scripts = dict()
-        new_data=dict()
+        new_data = dict()
         wappjson = json.loads(each['stack'][0])
 
         try:
             if each['a']:
-                havelinks=True
+                havelinks = True
         except:
-                havelinks = False
+            havelinks = False
 
         try:
             if each['js']:
-                havejs=True
+                havejs = True
         except:
-                havejs = False
+            havejs = False
 
         if havelinks:
             for item in each['a']:
@@ -97,8 +96,6 @@ def wappFormat(wappObj):
                 if "//" in item:
                     ahref.append(item)
                 a['href'] = ahref
-        else:
-            a['href']=""
 
         if havejs:
             for item in each['js']:
@@ -114,45 +111,42 @@ def wappFormat(wappObj):
                 if item not in js:
                     js.append(item)
                 scripts["js"] = js
-        else:
-            scripts["js"]=""
 
         for k, v in wappjson['urls'].items():
             k = k.rstrip('/')
             if k == each['url']:
                 new_data['url'] = each['url']
                 new_data['status'] = each['status']
-                #iplist=getAllipsFor(k)
+                # iplist=getAllipsFor(k)
                 new_data['ips'] = k
                 new_data['headers'] = dict(each['headers'])
-                if len(scripts)>0:
-                    new_data['js'] = dict(scripts['js'])
-                else:
-                    new_data['js'] = dict(scripts)
+
                 if len(a) > 0:
-                    new_data['ahref'] = dict(a['href'])
+                    new_data['ahref'] = a['href']
                 else:
-                    new_data['ahref'] = dict(a)
-                new_data['applications'] = wappjson.get('applications')
+                    new_data['ahref'] = a
+
+                if len(scripts) > 0:
+                    new_data['js'] = scripts['js']
+                else:
+                    new_data['js'] = scripts
+
+                wappalyzer_result = wappjson.get('applications')
+                if len(wappalyzer_result) > 0:
+                    wapp = list()
+
+                    for item in wappalyzer_result:
+                        witem = dict()
+                        witem['name'] = str(item['name'])
+                        witem['version'] = str(item['version'])
+                        witem['confidence'] = str(item['confidence'])
+                        wapp.append(witem)
+
+                    new_data['applications'] = wapp
+                else:
+                    new_data['applications'] = list(dict())
+
                 final_content.append(dict(new_data))
-
-    '''
-    tstamp = time.time()
-    print(tstamp)
-    
-    for item in final_content:
-        for k,v in item.items():
-            if k == 'js' or k == "ahref":
-                if isinstance(v, dict):
-                    for k2, v2 in v.items():
-                        print(str(k) + " <===> " + str(v2))
-                else:
-                    print(str(k) + " <===> " + str(v))
-            else:
-                print(str(k) +" <===> "+ str(v))
-
-    '''
-
 
     return final_content
 

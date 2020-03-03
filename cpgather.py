@@ -184,11 +184,10 @@ def WebDiscovery(nmapObj, domain):
 
     for item in list_of_webstack:
         print(item)
-        for k, v in item.items():
-            print(k,v)
+
+
         '''
-        
-        
+        for k, v in item.items():
             if k == 'js' or k == "ahref":
                 if isinstance(v, dict):
                     for k2, v2 in v.items():
@@ -197,11 +196,12 @@ def WebDiscovery(nmapObj, domain):
                     print(str(k) + " <===> " + str(v))
             else:
                 print(str(k) +" <===> "+ str(v))
+
         '''
 
         print("=" * 100)
         # appendFile("starbucks.com.web." + str(item['status']) + ".txt", item['url'])
-
+        sys.exit(1)
     appendFile(domain+".wapp",str(list_of_webstack))
 
     return True
@@ -215,7 +215,7 @@ def S3Discovery(domain,verbose):
             print "    + Bucket Found: %s" %str(bucket.rstrip("\n"))
     return True
 
-        
+
 if __name__ == "__main__":
     args = parse_args()
     user_domain = args.domain
