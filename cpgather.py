@@ -191,7 +191,7 @@ def WebDiscovery(nmapObj, domain):
         print("=" * 100)
         # appendFile("starbucks.com.web." + str(item['status']) + ".txt", item['url'])
 
-    appendFile(domain+".wapp",list_of_webstack)
+    appendFile(domain+".wapp",str(list_of_webstack))
 
     return True
 
