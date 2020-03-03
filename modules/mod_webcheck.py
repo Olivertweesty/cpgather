@@ -1,13 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from modules.mod_massdns import parseMassdnsStruct
+from modules.mod_massdns import parseMassdnsStruct, getAllipsFor
 from modules.mod_wappalyzer import execWappalyzer
 from modules.misc import sort_uniq
+
 import concurrent.futures
 import requests
 from urllib3.exceptions import InsecureRequestWarning
 import json
 from bs4 import BeautifulSoup
+
+
 try:
     from urllib import unquote
 except:
@@ -117,8 +120,8 @@ def wappFormat(wappObj):
             if k == each['url']:
                 new_data['url'] = each['url']
                 new_data['status'] = each['status']
-                # iplist=getAllipsFor(k)
-                new_data['ips'] = k
+                iplist=getAllipsFor(k)
+                new_data['ips'] = iplist #k
                 new_data['headers'] = dict(each['headers'])
 
                 if len(a) > 0:
