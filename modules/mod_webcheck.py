@@ -151,7 +151,7 @@ def RetrieveWebContent(urls):
     requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
     requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS = 'ALL'
     # We can use a with statement to ensure threads are cleaned up promptly
-    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
         # Start the load operations and mark each future with its URL
         future_to_url = { executor.submit(getUrl, url, 60): url for url in urls }
         for future in concurrent.futures.as_completed(future_to_url):

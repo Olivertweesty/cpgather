@@ -21,9 +21,7 @@ from modules.misc import saveFile, readFile, appendFile
 from modules.mod_s3scanner import execS3Scanner
 from modules.mod_waybackmachine import WayBackMachine
 from modules.mod_forwarddns import parseForwardDnsFile
-from modules.mod_webcheck import FindWeb
-from modules.mod_wappalyzer import execWappalyzer
-
+from modules.mod_webcheck import FindWeb, RetrieveWebContent, wappFormat
 
 SUBWL="/usr/share/wordlists/SecLists/Discovery/DNS/bitquark-subdomains-top100000.txt"   # Wordlist for subdomain bruteforcing
 RESOLVERS="/usr/share/massdns/lists/resolvers.txt"                                      # List of open DNS we can use to resolve / brute dns subdomains
@@ -180,9 +178,6 @@ def WebDiscovery(nmapObj, domain):
         webhosts = readFile(domain + ".web")
 
     print "[*] Web Stack identification via (Wappalyzer)"
-
-
-    from modules.mod_webcheck import RetrieveWebContent
     list_of_webstack = RetrieveWebContent(webhosts)
     list_of_webstack = wappFormat(list_of_webstack)
 
