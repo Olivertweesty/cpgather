@@ -120,7 +120,7 @@ def wappFormat(wappObj):
         for k, v in wappjson['urls'].items():
             k = k.rstrip('/')
             if k == each['url']:
-                print(scripts)
+                print(scripts['js'])
                 new_data['url'] = each['url']
                 new_data['status'] = each['status']
                 #iplist=getAllipsFor(k)
