@@ -183,10 +183,12 @@ def WebDiscovery(nmapObj, domain):
 
     for item in list_of_webstack:
         #appendFile(domain+".web." + str(item['status']) + ".txt", item['url'])
+        print(type(item))
         for k,v in item.items():
-            print(k,v)
-        #print("Headers: " + str(len(item['status'])))
-        #print("Webapps: " + str(len(item['stack'])))
+            print(type(k))
+            print(type(v))
+            print(len(v))
+            print(k)
 
         print("=" * 100)
         # appendFile("starbucks.com.web." + str(item['status']) + ".txt", item['url'])
@@ -227,7 +229,6 @@ if __name__ == "__main__":
         ports = user_ports
     else:
         ports="1-65535"
-
 
     ips,hosts = TargetDiscovery(user_domain,wordlist)
     if not user_noscan:
