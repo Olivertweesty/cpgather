@@ -9,6 +9,7 @@ __version__ = '1.0'
 import argparse
 import sys
 import os
+import json
 
 from modules.mod_amass import execAmass, parseAmass
 from modules.mod_sublist3r import execSublist3r, parseSublist3r
@@ -183,27 +184,9 @@ def WebDiscovery(nmapObj, domain):
 
 
     for item in list_of_webstack:
-        print(item)
-
-
-        '''
-        for k, v in item.items():
-            if k == 'js' or k == "ahref":
-                if isinstance(v, dict):
-                    for k2, v2 in v.items():
-                        print(str(k) + " <===> " + str(v2))
-                else:
-                    print(str(k) + " <===> " + str(v))
-            else:
-                print(str(k) +" <===> "+ str(v))
-
-        '''
-
-        print("=" * 100)
-        # appendFile("starbucks.com.web." + str(item['status']) + ".txt", item['url'])
-        sys.exit(1)
-    appendFile(domain+".wapp",str(list_of_webstack))
-
+        njson = json.dumps(item)
+        appendFile(domain+".wapp",njson)
+        appendFile("starbucks.com.web." + str(item['status']) + ".txt", item['url'])
     return True
 
 def S3Discovery(domain,verbose):
