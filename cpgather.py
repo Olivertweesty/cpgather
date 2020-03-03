@@ -223,7 +223,7 @@ if __name__ == "__main__":
     if not user_noscan:
         if os.path.isfile(user_domain+".nmap.xml") == False or os.path.getsize(user_domain+".nmap.xml") == 0:
             PortScanning(ips, user_domain, user_verbose, ports)
-        nmapObj = nmap_LoadXmlObject(domain + ".nmap.xml")
+        nmapObj = nmap_LoadXmlObject(user_domain + ".nmap.xml")
 
     if nmapObj is not False:
         list_of_webservers_found = WebDiscovery(nmapObj, user_domain)
