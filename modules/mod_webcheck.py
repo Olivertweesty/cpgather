@@ -120,14 +120,14 @@ def wappFormat(wappObj):
         for k, v in wappjson['urls'].items():
             k = k.rstrip('/')
             if k == each['url']:
-                new_data['url'] = each['url'][0]
-                new_data['status'] = each['status'][0]
+                new_data['url'] = each['url']
+                new_data['status'] = each['status']
                 #iplist=getAllipsFor(k)
                 new_data['ips'] = k
-                new_data['headers'] = dict(each['headers'])[0]
+                new_data['headers'] = dict(each['headers'])
                 new_data['js'] = dict(scripts)
                 new_data['ahref'] = dict(a)
-                new_data['applications'] = wappjson.get('applications')[0]
+                new_data['applications'] = wappjson.get('applications')
                 final_content.append(dict(new_data))
 
     return final_content
