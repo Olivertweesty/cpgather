@@ -178,16 +178,20 @@ def WebDiscovery(nmapObj, domain):
     else:
         webhosts = readFile(domain + ".web")
 
+
     print "[*] Web Stack identification via (Wappalyzer)"
-    list_of_webstack = RetrieveWebContent(webhosts)
-    list_of_webstack = wappFormat(list_of_webstack)
+    if os.path.isfile(domain+".wapp") == False or os.path.getsize(domain+".wapp") == 0:
+        list_of_webstack = RetrieveWebContent(webhosts)
+        list_of_webstack = wappFormat(list_of_webstack)
 
+        for item in list_of_webstack:
+            njson = json.dumps(item)
+            appendFile(domain + ".wapp", njson)
+            appendFile("starbucks.com.web." + str(item['status']) + ".txt", item['url']+"\n")
+    else:
+        list_of_webstack = readFile(domain + ".wapp")
 
-    for item in list_of_webstack:
-        njson = json.dumps(item)
-        appendFile(domain+".wapp",njson)
-        appendFile("starbucks.com.web." + str(item['status']) + ".txt", item['url'])
-    return True
+    return webhosts,list_of_webstack
 
 def S3Discovery(domain,verbose):
     print "[*] S3 Buckets Discovery phase has started"
@@ -229,10 +233,12 @@ if __name__ == "__main__":
         nmapObj = nmap_LoadXmlObject(user_domain + ".nmap.xml")
 
     if nmapObj is not False:
-        list_of_webservers_found = WebDiscovery(nmapObj, user_domain)
+        list_of_webservers_found, list_of_webstack = WebDiscovery(nmapObj, user_domain)
     else:
         print("[*] Web discovery skipped (no open ports found)")
+
     S3Discovery(user_domain, user_verbose)
+
     print("[*] You're good to go! ")
     print("[*] Recommendation:")
     print("  + Spider every page")
