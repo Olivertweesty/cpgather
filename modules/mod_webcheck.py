@@ -8,7 +8,7 @@ import requests
 from urllib3.exceptions import InsecureRequestWarning
 import json
 from bs4 import BeautifulSoup
-
+import time
 try:
     from urllib import unquote
 except:
@@ -125,10 +125,34 @@ def wappFormat(wappObj):
                 #iplist=getAllipsFor(k)
                 new_data['ips'] = k
                 new_data['headers'] = dict(each['headers'])
-                new_data['js'] = dict(scripts)
-                new_data['ahref'] = dict(a)
+                if len(scripts>0):
+                    new_data['js'] = dict(scripts['js'])
+                else:
+                    new_data['js'] = dict(scripts)
+                if len(a) > 0:
+                    new_data['ahref'] = dict(a['href'])
+                else:
+                    new_data['ahref'] = dict(a)
                 new_data['applications'] = wappjson.get('applications')
                 final_content.append(dict(new_data))
+
+    '''
+    tstamp = time.time()
+    print(tstamp)
+    
+    for item in final_content:
+        for k,v in item.items():
+            if k == 'js' or k == "ahref":
+                if isinstance(v, dict):
+                    for k2, v2 in v.items():
+                        print(str(k) + " <===> " + str(v2))
+                else:
+                    print(str(k) + " <===> " + str(v))
+            else:
+                print(str(k) +" <===> "+ str(v))
+
+    '''
+
 
     return final_content
 

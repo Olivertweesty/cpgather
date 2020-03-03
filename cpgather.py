@@ -181,9 +181,14 @@ def WebDiscovery(nmapObj, domain):
     list_of_webstack = RetrieveWebContent(webhosts)
     list_of_webstack = wappFormat(list_of_webstack)
 
+
     for item in list_of_webstack:
-        #appendFile(domain+".web." + str(item['status']) + ".txt", item['url'])
-        for k,v in item.items():
+        print(item)
+        for k, v in item.items():
+            print(k,v)
+        '''
+        
+        
             if k == 'js' or k == "ahref":
                 if isinstance(v, dict):
                     for k2, v2 in v.items():
@@ -192,6 +197,7 @@ def WebDiscovery(nmapObj, domain):
                     print(str(k) + " <===> " + str(v))
             else:
                 print(str(k) +" <===> "+ str(v))
+        '''
 
         print("=" * 100)
         # appendFile("starbucks.com.web." + str(item['status']) + ".txt", item['url'])
