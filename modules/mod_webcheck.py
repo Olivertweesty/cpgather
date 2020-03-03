@@ -8,7 +8,7 @@ try:
 except ImportError:
     from urlparse import urlparse
 
-scrapdata = list()
+web_service_names = ["http","http-proxy","https","https-alt","ssl"]
 
 def getHostnameFromIp(massdnsstruct,ip):
     host_ips = list()
@@ -44,3 +44,15 @@ def FindWeb(domain, nmapObj):
     return weblist
 
 
+
+def RetrieveWeb(urls):
+    with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+        future_to_url = { executor.submit(getUrl, url, 60): url for url in urls }
+        for future in concurrent.futures.as_completed(future_to_url):
+            url = future_to_url[future]
+            try:
+                data = future.result()
+            except Exception as exc:
+                print('[x] Failed: %s: %s' % (url.rstrip(),exc))
+            else:
+                print('%r page is %d bytes' % (url.rstrip(), len(data)))
