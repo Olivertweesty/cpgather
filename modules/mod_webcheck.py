@@ -65,14 +65,26 @@ def FindWeb(domain, nmapObj):
 def wappFormat(wappObj):
     final_content = list()
     for each in wappObj:
-        js = list()
         ahref = list()
         a = dict()
+        js = list()
         scripts = dict()
         new_data=dict()
         wappjson = json.loads(each['stack'][0])
 
-        if each['a']:
+        try:
+            if each['a']:
+                havelinks=True
+        except:
+                havelinks = False
+
+        try:
+            if each['js']:
+                havejs=True
+        except:
+                havejs = False
+
+        if havelinks:
             for item in each['a']:
                 item = item.replace(" ", '')
                 item = item.replace("\n", '')
@@ -85,8 +97,10 @@ def wappFormat(wappObj):
                 if "//" in item:
                     ahref.append(item)
                 a['href'] = ahref
+        else:
+            a['href']=""
 
-        if each['js']:
+        if havejs:
             for item in each['js']:
 
                 item = item.replace(" ", '')
@@ -100,6 +114,8 @@ def wappFormat(wappObj):
                 if item not in js:
                     js.append(item)
                 scripts["js"] = js
+        else:
+            scripts["js"]=""
 
         for k, v in wappjson['urls'].items():
             k = k.rstrip('/')
