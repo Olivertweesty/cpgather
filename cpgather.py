@@ -180,9 +180,23 @@ def WebDiscovery(nmapObj, domain):
         webhosts = readFile(domain + ".web")
 
     print "[*] Web Stack identification via (Wappalyzer)"
-    for webtarget in webhosts:
-        out,err = execWappalyzer(webtarget)
-        appendFile(domain+".wapp",out)
+
+
+    from modules.mod_webcheck import RetrieveWebContent
+    list_of_webstack = RetrieveWebContent(webhosts)
+    list_of_webstack = wappFormat(list_of_webstack)
+
+    for item in list_of_webstack:
+        #appendFile(domain+".web." + str(item['status']) + ".txt", item['url'])
+        print(item['status'])
+        print(item['url'])
+        print("Headers: " + str(len(item['status'])))
+        print("Webapps: " + str(len(item['stack'])))
+
+        print("=" * 100)
+        # appendFile("starbucks.com.web." + str(item['status']) + ".txt", item['url'])
+
+        appendFile(domain+".wapp",list_of_webstack)
     return True
 
 def S3Discovery(domain,verbose):
