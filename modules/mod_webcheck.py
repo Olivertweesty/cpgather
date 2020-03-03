@@ -125,8 +125,8 @@ def wappFormat(wappObj):
                 #iplist=getAllipsFor(k)
                 new_data['ips'] = k
                 new_data['headers'] = dict(each['headers'])
-                new_data['js'] = dict(scripts)
-                new_data['ahref'] = dict(a)
+                new_data['js'] = dict(scripts['js'])
+                new_data['ahref'] = dict(a['ahref'])
                 new_data['applications'] = wappjson.get('applications')
                 final_content.append(dict(new_data))
 
