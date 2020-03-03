@@ -2,11 +2,18 @@
 # -*- coding: utf-8 -*-
 from modules.mod_massdns import parseMassdnsStruct
 from modules.misc import sort_uniq
+import concurrent.futures
+import requests
+from urllib3.exceptions import InsecureRequestWarning
+import json
+from bs4 import BeautifulSoup
 
 try:
-    from urllib.parse import urlparse
-except ImportError:
-    from urlparse import urlparse
+    from urllib import unquote
+except:
+    from urllib.parse import unquote
+
+
 
 web_service_names = ["http","http-proxy","https","https-alt","ssl"]
 
@@ -44,15 +51,115 @@ def FindWeb(domain, nmapObj):
     return weblist
 
 
+'''
+    list(
+        url: string
+        headers: string
+        js: list
+        ahref: list
+        applications: dict
+    )
 
-def RetrieveWeb(urls):
-    with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+'''
+def wappFormat(wappObj):
+    final_content = list()
+    for each in wappObj:
+        js = list()
+        ahref = list()
+        a = dict()
+        scripts = dict()
+        new_data=dict()
+        wappjson = json.loads(each['stack'][0])
+
+        if each['a']:
+            for item in each['a']:
+                item = item.replace(" ", '')
+                item = item.replace("\n", '')
+                if '%' in item:
+                    item = unquote(str(item))
+                if "javascript:void(0)" in item:
+                    continue
+                if "#" == item:
+                    continue
+                if "//" in item:
+                    ahref.append(item)
+                a['href'] = ahref
+
+        if each['js']:
+            for item in each['js']:
+
+                item = item.replace(" ", '')
+                item = item.rstrip()
+                if '%' in item:
+                    item = unquote(str(item))
+                if "javascript:" in item:
+                    continue
+                if "#" == item:
+                    continue
+                if item not in js:
+                    js.append(item)
+                scripts["js"] = js
+
+        for k, v in wappjson['urls'].items():
+            k = k.rstrip('/')
+            if k == each['url']:
+                new_data['url'] = each['url']
+                #iplist=getAllipsFor(k)
+                new_data['ips'] = k
+                new_data['headers'] = dict(each['headers'])
+                new_data['js'] = dict(scripts)
+                new_data['ahref'] = dict(a)
+                new_data['applications'] = wappjson.get('applications')
+                final_content.append(dict(new_data))
+
+    return final_content
+
+def getUrl(url,timeout):
+    ret=dict()
+    ahr=list()
+    jsf=list()
+    url=url.rstrip()
+    r = requests.get(url, timeout=timeout, verify=False)
+    soup = BeautifulSoup(r.content, features="lxml")
+    ret['url'] = url
+    ret['status'] = r.status_code
+    scripts = soup.find_all("script")
+    for tag in scripts:
+        try:
+            jsf.append(tag['src'])
+        except:
+            pass
+        else:
+            ret['js'] = jsf
+
+    links = soup.find_all("a")
+    for tag in links:
+        try:
+            ahr.append(tag['href'])
+        except:
+            pass
+        else:
+            ret['a'] = ahr
+
+    ret['headers'] = r.headers
+    ret['stack'] = execWappalyzer(url)
+
+    return ret
+
+def RetrieveWebContent(urls):
+    list_of_webstack = list()
+    requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
+    requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS = 'ALL'
+    # We can use a with statement to ensure threads are cleaned up promptly
+    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
+        # Start the load operations and mark each future with its URL
         future_to_url = { executor.submit(getUrl, url, 60): url for url in urls }
         for future in concurrent.futures.as_completed(future_to_url):
             url = future_to_url[future]
             try:
-                data = future.result()
+                wp = future.result()
             except Exception as exc:
-                print('[x] Failed: %s: %s' % (url.rstrip(),exc))
+                pass # just pass
             else:
-                print('%r page is %d bytes' % (url.rstrip(), len(data)))
+                list_of_webstack.append(dict(wp))
+    return list_of_webstack
