@@ -17,7 +17,7 @@ from modules.mod_massdns import execMassdns, parseMassdns
 from modules.mod_masscan import execMasscan
 from modules.masstomap import execMton
 from modules.mod_nmap import nmap_LoadXmlObject
-from modules.misc import saveFile, readFile
+from modules.misc import saveFile, readFile, appendFile
 from modules.mod_s3scanner import execS3Scanner
 from modules.mod_waybackmachine import WayBackMachine
 from modules.mod_forwarddns import parseForwardDnsFile
