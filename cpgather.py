@@ -227,7 +227,7 @@ if __name__ == "__main__":
             execMasscan(user_domain, ports)
             print "  + Running nmap fingerprinting and scripts"
             execMton(user_domain)
-            nmapObj = nmap_LoadXmlObject(user_domain + ".nmap.xml")
+        nmapObj = nmap_LoadXmlObject(user_domain + ".nmap.xml")
 
     if nmapObj is not False:
         list_of_webservers_found, list_of_webstack = WebDiscovery(nmapObj, user_domain)
