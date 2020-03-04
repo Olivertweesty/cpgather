@@ -223,15 +223,11 @@ if __name__ == "__main__":
     if not user_noscan:
         print "[*] Port Scanning phase started"
         if os.path.isfile(user_domain + ".nmap.xml") == False or os.path.getsize(user_domain + ".nmap.xml") == 0:
-            if verbose:
-                print "  + Running masscan against %s targets" % str(len(ips))
+            print "  + Running masscan against %s targets" % str(len(ips))
             execMasscan(domain, ports)
-            if verbose:
-                print "  + Running nmap fingerprinting and scripts"
+            print "  + Running nmap fingerprinting and scripts"
             execMton(domain)
-
             nmapObj = nmap_LoadXmlObject(user_domain + ".nmap.xml")
-
 
     if nmapObj is not False:
         list_of_webservers_found, list_of_webstack = WebDiscovery(nmapObj, user_domain)
