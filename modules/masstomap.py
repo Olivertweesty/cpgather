@@ -6,7 +6,6 @@ import xml.dom.minidom
 from base64 import b64encode
 
 def execMton(domain):
-
     workingdir = os.getcwd()
     if os.path.isfile(domain + ".nmap.xml") == False and \
             os.path.isfile(domain + ".nmap.grepable") == False and \
