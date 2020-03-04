@@ -159,16 +159,6 @@ def TargetDiscovery(domain,wordlist):
 
     return unique_ips,uhosts
 
-def PortScanning(ips, domain, verbose, ports):
-    print "[*] Port Scanning phase started"
-    if verbose:
-        print "  + Running masscan against %s targets" %str(len(ips))
-    execMasscan(domain,ports)
-    if verbose:
-        print "  + Running nmap fingerprinting and scripts"
-    execMton(domain)
-    return True
-
 def WebDiscovery(nmapObj, domain):
     print "[*] Web Discovery phase has started"
     if os.path.isfile(domain+".web") == False or os.path.getsize(domain+".web") == 0:
@@ -227,10 +217,18 @@ if __name__ == "__main__":
 
     ips,hosts = TargetDiscovery(user_domain,wordlist)
     if not user_noscan:
-        if os.path.isfile(user_domain+".nmap.xml") == False or os.path.getsize(user_domain+".nmap.xml") == 0:
-            PortScanning(ips, user_domain, user_verbose, ports)
-        else:
+        print "[*] Port Scanning phase started"
+        if os.path.isfile(user_domain + ".nmap.xml") == False or os.path.getsize(user_domain + ".nmap.xml") == 0:
+            if verbose:
+                print "  + Running masscan against %s targets" % str(len(ips))
+            execMasscan(domain, ports)
+            if verbose:
+                print "  + Running nmap fingerprinting and scripts"
+            execMton(domain)
+
             nmapObj = nmap_LoadXmlObject(user_domain + ".nmap.xml")
+        else:
+            nmapObj = False
 
     if nmapObj is not False:
         list_of_webservers_found, list_of_webstack = WebDiscovery(nmapObj, user_domain)
@@ -239,11 +237,7 @@ if __name__ == "__main__":
 
     S3Discovery(user_domain, user_verbose)
 
-    print("[*] You're good to go! ")
-    print("[*] Recommendation:")
-    print("  + Spider every page")
-    print("  + Subjs + linkfinder")
-    print("  + ffuf !")
+    print("[*] cpgather finished! ")
 
 
 
