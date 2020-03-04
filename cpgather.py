@@ -217,7 +217,7 @@ if __name__ == "__main__":
     nmapObj = False
 
     ips,hosts = TargetDiscovery(user_domain,wordlist)
-    if len(ips) = 0:
+    if len(ips) == 0:
         user_noscan = True
 
     if not user_noscan:
