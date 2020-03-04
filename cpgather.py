@@ -224,9 +224,9 @@ if __name__ == "__main__":
         print "[*] Port Scanning phase started"
         if os.path.isfile(user_domain + ".nmap.xml") == False or os.path.getsize(user_domain + ".nmap.xml") == 0:
             print "  + Running masscan against %s targets" % str(len(ips))
-            execMasscan(domain, ports)
+            execMasscan(user_domain, ports)
             print "  + Running nmap fingerprinting and scripts"
-            execMton(domain)
+            execMton(user_domain)
             nmapObj = nmap_LoadXmlObject(user_domain + ".nmap.xml")
 
     if nmapObj is not False:
