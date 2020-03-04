@@ -214,8 +214,12 @@ if __name__ == "__main__":
         ports = user_ports
     else:
         ports="1-65535"
+    nmapObj = False
 
     ips,hosts = TargetDiscovery(user_domain,wordlist)
+    if len(ips) = 0:
+        user_noscan = True
+
     if not user_noscan:
         print "[*] Port Scanning phase started"
         if os.path.isfile(user_domain + ".nmap.xml") == False or os.path.getsize(user_domain + ".nmap.xml") == 0:
@@ -227,8 +231,7 @@ if __name__ == "__main__":
             execMton(domain)
 
             nmapObj = nmap_LoadXmlObject(user_domain + ".nmap.xml")
-        else:
-            nmapObj = False
+
 
     if nmapObj is not False:
         list_of_webservers_found, list_of_webstack = WebDiscovery(nmapObj, user_domain)
