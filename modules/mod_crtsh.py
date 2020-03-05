@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from misc import readFile, saveFile
+from misc import readFile, saveFile, checkFqdn
 from crtsh import crtshAPI
 import os
 
@@ -13,6 +13,12 @@ def crtshQuery(domain):
         for item in rawlist:
             for k, v in item.items():
                 if k == "name_value":
+                    if '@' in v:
+                        continue
+                    if '*' in v:
+                        continue
+                    if checkFqdn(v) == False:
+                        continue
                     if '\n' in v:
                         for tok in v.split('\n'):
                             found.append(tok)
