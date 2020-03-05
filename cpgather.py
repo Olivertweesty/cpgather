@@ -26,7 +26,7 @@ from modules.mod_crtsh import crtshQuery
 from modules.mod_forwarddns import parseForwardDnsFile
 from modules.mod_webcheck import FindWeb, RetrieveWebContent, wappFormat
 
-SUBWL="/usr/share/wordlists/SecLists/Discovery/DNS/bitquark-subdomains-top100000.txt"   # Wordlist for subdomain bruteforcing
+SUBWL="/usr/share/wordlists/commonspeak2-wordlists/subdomains/subdomains.txt"
 RESOLVERS="/usr/share/massdns/lists/resolvers.txt"                                      # List of open DNS we can use to resolve / brute dns subdomains
 
 global CPPATH

@@ -213,10 +213,8 @@ install_wordlists(){
     echo "  + Brazillian pt_BR"
     git clone https://github.com/dogasantos/ptbr-wordlist.git ptbr-wordlist >/dev/null 2>/dev/null
     echo "  + Commonspeak2"
-    mkdir commonspeak2
-    cd commonspeak2
-    wget -q https://raw.githubusercontent.com/assetnote/commonspeak2-wordlists/master/routes/rails-1k-sample-august-2018.txt
-    wget -q https://raw.githubusercontent.com/assetnote/commonspeak2-wordlists/master/subdomains/subdomains.txt
+    git clone https://github.com/assetnote/commonspeak2-wordlists.git  >/dev/null 2>/dev/null
+
 
 }
 
