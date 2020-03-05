@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 from misc import readFile, saveFile
 from crtsh import crtshAPI
+import os
 
 
 def crtshQuery(domain):
