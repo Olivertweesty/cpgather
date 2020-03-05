@@ -9,12 +9,20 @@ export WDIR=$(pwd)
 install_pynmap(){
     pip uninstall python-nmap
     cd /tmp
-    git clone https://github.com/dogasantos/python-nmap.git
+    git clone https://github.com/dogasantos/python-nmap
     cd python-nmap
     python setup.py install
 }
 
-install_photon() {
+install_crtsh(){
+    cd /tmp
+    git clone https://github.com/PaulSec/crt.sh
+    cd crt.sh
+    pip install -r requirements.txt
+    python setup.py install
+}
+
+}install_photon() {
     if [ -d  /usr/share/photon ]
     then
         return 1
@@ -235,6 +243,7 @@ install_linkfinder
 install_s3scanner
 #install_wordlists
 install_pynmap
+install_crtsh
 cd $WDIR
 echo "  + DONE"
 
