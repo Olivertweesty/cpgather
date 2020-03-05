@@ -56,9 +56,19 @@ def parseMassdnsStruct(domain):
     return aux
 
 
+def getIpsByvhost(url):
+    ips = list()
+    url = url.rstrip("/")
+    ipdb = parseMassdnsStruct(url)
+    for line in ipdb:
+        if url == line['vhost']:
+            ips.append(line['ipaddr'])
+    return ips
+
 def getAllipsFor(url):
     ips = list()
     url = url.rstrip("/")
+    url = url.replace("http://", '').replace("https://", '').split(":")[0]
     host, dom, tld = splitHostname(url)
     ipdb = parseMassdnsStruct(dom + "." + tld)
     for line in ipdb:

@@ -227,6 +227,8 @@ if __name__ == "__main__":
             execMasscan(user_domain, ports)
             print "  + Running nmap fingerprinting and scripts"
             execMton(user_domain)
+        else:
+            print "  + Nmap report found, loading data..."
         nmapObj = nmap_LoadXmlObject(user_domain + ".nmap.xml")
 
     if nmapObj is not False:

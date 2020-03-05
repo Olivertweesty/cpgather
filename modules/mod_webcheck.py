@@ -118,8 +118,8 @@ def wappFormat(wappObj):
         for k, v in wappjson['urls'].items():
             k = k.rstrip('/')
             if k == each['url']:
-                new_data['url'] = each['url']
                 new_data['status'] = each['status']
+                new_data['url'] = each['url']
                 iplist=getAllipsFor(k)
                 new_data['ips'] = iplist #k
                 new_data['headers'] = dict(each['headers'])
