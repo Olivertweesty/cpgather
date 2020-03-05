@@ -4,7 +4,7 @@ from misc import readFile, saveFile
 from crtsh import crtshAPI
 
 
-def crtsh(domain):
+def crtshQuery(domain):
     found = list()
     if os.path.isfile(domain + ".sub.crtsh") == False or os.path.getsize(domain + ".sub.crtsh") == 0:
 

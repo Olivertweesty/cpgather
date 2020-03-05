@@ -21,6 +21,8 @@ from modules.mod_nmap import nmap_LoadXmlObject
 from modules.misc import saveFile, readFile, appendFile
 from modules.mod_s3scanner import execS3Scanner
 from modules.mod_waybackmachine import WayBackMachine
+from modules.mod_crtsh import crtshQuery
+
 from modules.mod_forwarddns import parseForwardDnsFile
 from modules.mod_webcheck import FindWeb, RetrieveWebContent, wappFormat
 
@@ -113,7 +115,7 @@ def TargetDiscovery(domain,wordlist):
     wayback_found_list = WayBackMachine(domain)
 
     print "  + Running Crt.sh query"
-    crtsh_found_list = crtsh(domain)
+    crtsh_found_list = crtshQuery(domain)
 
     print "  + Running subfinder (bruteforce mode)"
     execSubfinder(domain,wordlist)
