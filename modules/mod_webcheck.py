@@ -133,7 +133,7 @@ def wappFormat(wappObj):
                     new_data['js'] = scripts['js']
                 else:
                     new_data['js'] = scripts
-
+                
                 wappalyzer_result = wappjson.get('applications')
                 if len(wappalyzer_result) > 0:
                     wapp = list()

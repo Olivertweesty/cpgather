@@ -8,8 +8,11 @@ import os
 def crtshQuery(domain):
     found = list()
     if os.path.isfile(domain + ".sub.crtsh") == False or os.path.getsize(domain + ".sub.crtsh") == 0:
+        try:
+            rawlist = crtshAPI().search(domain)[0]
+        except:
+            rawlist = list()
 
-        rawlist = crtshAPI().search(domain)[0]
         for item in rawlist:
             for k, v in item.items():
                 if k == "name_value":
