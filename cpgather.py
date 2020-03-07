@@ -234,8 +234,13 @@ if __name__ == "__main__":
         if os.path.isfile(user_domain + ".nmap.xml") == False or os.path.getsize(user_domain + ".nmap.xml") == 0:
             print "  + Running masscan against %s targets" % str(len(ips))
             execMasscan(user_domain, ports)
-            print "  + Running nmap fingerprinting and scripts"
-            execMton(user_domain)
+            oports = readFile(domain + ".masscan")
+            if len(oports) > 0:
+                print("  + Running nmap fingerprinting and scripts")
+                execMton(user_domain)
+            else:
+                print("[x] No open ports found for this domain. Aborting...")
+                sys.exit(1)
         else:
             print "  + Nmap report found, loading data..."
         nmapObj = nmap_LoadXmlObject(user_domain + ".nmap.xml")
