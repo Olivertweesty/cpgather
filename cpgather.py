@@ -33,42 +33,21 @@ global CPPATH
 CPPATH=os.path.dirname(os.path.realpath(__file__))
 
 '''
+What this is about:
 
-mecanica:
-OK - receber dominio e/ou lista de ips do escopo - OK 
-OK - rodar amass, subfinder e massdns para descobrir os hosts do escopo - OK
+OK - receber dominio e/ou lista de ips do escopo
+OK - rodar amass, subfinder e massdns para descobrir os hosts do escopo
 OK - rodar masscan pra descobrir portas abertas
-OK - dns subdomain bforce - OK
-OK - rodar nmap full - OK
-OK - decobrir destas portas abertas, quais sao webservers/http - ok
-ripar - we have cloudfront cnames? cloudfrunt! git clone https://github.com/disloops/cloudfrunt.git
-OK - rodar eyewitness para tirar screenshot de todos os webservers encontrados e publicar - ok
-OK - rodar wappalyzer pra identificar stack das aplicacoes - ok
- - rodar photon-crawler (python mod_photon.py -u https://teslamotors.com -l 3 -t 4 --wayback -o teste)
- - rodar cralwer para validar URLS mapeaveis na aplicacao
-    - pegar todos os arquivos JS e jogar no LinkFinder para encontrar endpoints
- - rodar gobuster e descobrir diretorios nestes apps (wordlists de common webapps, common dirs, robotsdisallowed, minha custom)
- - identificar todos os webserver com pagina padrao (ngnix, apache, iis, ...)
-    - testar a lista de subdominios encontrados contra estes servers e verificar se as apps aparecem (pode ser openproxy, ou pode ser vhost)
-    - rodar a ferramenta virtual-host-discovery para forcar vhosts nesse ip (forca-bruta) (pegar wordlist de webapps comuns)
-    - hash do EyeWitness pra ver se o resultado muda ? ou size da pagina...
-    - CORStest
- - temos wordpress? wpscan
- - temos joomla? jooscan
- - CORStest
- -
- - testes adicionais
- -  brutespray em ftp e ssh
- -  testssl
- -  parameth em webapps + tplmap + sqlmap + grabber (xss) + (ssrf) (identificar se variavel recebe uma URL ou um path pra arquivo, fuzz pra verificar ssrf usando a cheatsheet do jhaddi wlalarmx)
- -  wpscan
- -
- - como estar IDOR ? verificar numeros em parametros (id, email, hash ) tool = commix
- -
- -
- -
- -
-
+OK - dns subdomain bforce 
+OK - rodar nmap full
+- validar CPE obtido pelo nmap com vulners ou outro meio
+OK - decobrir destas portas abertas, quais sao webservers/http
+OK - rodar eyewitness para tirar screenshot de todos os webservers encontrados e publicar
+OK - rodar wappalyzer pra identificar stack das aplicacoes
+- validar vulnerabilidades com cada app encontrada através do vulners
+OK - rodar cralwer para validar URLS mapeaveis na aplicacao (primeira pagina)
+ - pegar todos os arquivos JS e jogar no LinkFinder para encontrar endpoints
+ - usar ffuf e uma wordlist básica por framework/applicacao/contexto + novos endpoits encontrados dentro dos arquivos JS
 '''
 
 def banner():
