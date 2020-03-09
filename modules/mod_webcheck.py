@@ -9,6 +9,7 @@ import requests
 from urllib3.exceptions import InsecureRequestWarning
 import json
 from bs4 import BeautifulSoup
+from base64 import b64encode
 
 
 try:
@@ -16,7 +17,8 @@ try:
 except:
     from urllib.parse import unquote
 
-
+interesting_header_strings = ["JBoss","Tomcat","Access-Control-Allow-Origin","PHP","BIGipServerexchange","owa_pool","X-OWA-Version"]
+interesting_content_strings = ["javax.faces.ViewState","Telerik.Web.UI.WebResource.axd","Telerik"]
 
 web_service_names = ["http","http-proxy","https","https-alt","ssl"]
 
@@ -115,6 +117,8 @@ def wappFormat(wappObj):
                     js.append(item)
                 scripts["js"] = js
 
+
+
         for k, v in wappjson['urls'].items():
             k = k.rstrip('/')
             if k == each['url']:
@@ -133,7 +137,8 @@ def wappFormat(wappObj):
                     new_data['js'] = scripts['js']
                 else:
                     new_data['js'] = scripts
-                
+
+
                 wappalyzer_result = wappjson.get('applications')
                 if len(wappalyzer_result) > 0:
                     wapp = list()
@@ -149,6 +154,7 @@ def wappFormat(wappObj):
                 else:
                     new_data['applications'] = list(dict())
 
+                new_data['content'] = each['content']
                 final_content.append(dict(new_data))
 
     return final_content
@@ -160,6 +166,7 @@ def getUrl(url,timeout):
     url=url.rstrip()
     r = requests.get(url, timeout=timeout, verify=False)
     soup = BeautifulSoup(r.content, features="lxml")
+
     ret['url'] = url
     ret['status'] = r.status_code
     scripts = soup.find_all("script")
@@ -182,6 +189,7 @@ def getUrl(url,timeout):
 
     ret['headers'] = r.headers
     ret['stack'] = execWappalyzer(url)
+    ret['content'] = b64encode(r.content)
 
     return ret
 
@@ -202,3 +210,29 @@ def RetrieveWebContent(urls):
             else:
                 list_of_webstack.append(dict(wp))
     return list_of_webstack
+
+def FindInterestingContent(list_of_webstack):
+    intel=list()
+    for item in list_of_webstack:
+        for iheader in interesting_header_strings:
+            cool = dict()
+            if iheader in item['headers']:
+                cool['url']=item['url']
+                cool['headers']=item['headers']
+                cool['interesting'] = iheader
+                intel.append(cool)
+
+        for item in interesting_content_strings:
+            cool = dict()
+            if icontent in item['content']:
+                cool['url'] = item['url']
+                cool['headers'] = item['headers']
+                cool['interesting'] = icontent
+                intel.append(cool)
+    return intel
+
+
+
+
+
+
