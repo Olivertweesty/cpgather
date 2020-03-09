@@ -7,7 +7,8 @@
 export WDIR=$(pwd)
 
 
-prepare(){
+prepare()
+{
 
     export DEBIAN_FRONTEND=noninteractive
     apt-get update
@@ -15,7 +16,8 @@ prepare(){
     then
         apt-get -y install python-opencv python-lxml
     fi
-    apt-get install -y wget  zlib1g-dev libjpeg-dev nginx php7.2-fpm nmap python python-pip vim build-essential pkg-config git
+    apt-get -y install nmap python python-pip vim
+    apt-get -y install build-essential pkg-config
 
 
     cd /usr/local/
@@ -61,21 +63,21 @@ prepare(){
 
 
 install_pynmap(){
-    pip uninstall -y python-nmap >/dev/null 2>/dev/null
+    pip uninstall -y python-nmap
     cd /tmp
-    git clone https://github.com/dogasantos/python-nmap >/dev/null 2>/dev/null
+    git clone https://github.com/dogasantos/python-nmap
     cd python-nmap
-    python setup.py install >/dev/null 2>/dev/null
+    python setup.py install
     cd /tmp
     rm -rf python-nmap
 }
 
 install_crtsh(){
     cd /tmp
-    git clone https://github.com/PaulSec/crt.sh >/dev/null 2>/dev/null
+    git clone https://github.com/PaulSec/crt.sh
     cd crt.sh
-    pip install -r requirements.txt >/dev/null 2>/dev/null
-    python setup.py install >/dev/null 2>/dev/null
+    pip install -r requirements.txt
+    python setup.py install
 }
 
 install_photon() {
@@ -85,8 +87,8 @@ install_photon() {
     fi
     echo "[*] Installing Photon Crawler"
     cd /usr/share
-    git clone https://github.com/s0md3v/Photon.git photon >/dev/null 2>/dev/null
-    pip install -r photon/requirements.txt >/dev/null 2>/dev/null
+    git clone https://github.com/s0md3v/Photon.git photon
+    pip install -r photon/requirements.txt
     echo "#!/bin/bash" > /usr/bin/photon
     echo "python3 /usr/share/photon/mod_photon.py \$@" >> /usr/bin/photon
     chmod 755 /usr/bin/photon
@@ -101,10 +103,10 @@ install_massdns(){
     fi
     echo "[*] Installing massdns"
     cd /usr/share
-    git clone https://github.com/blechschmidt/massdns.git >/dev/null 2>/dev/null
+    git clone https://github.com/blechschmidt/massdns.git
     cd massdns
-    make >/dev/null 2>/dev/null
-    make install >/dev/null 2>/dev/null
+    make
+    make install
     echo "  + DONE"
 }
 
@@ -116,10 +118,10 @@ install_masscan(){
     echo "[*] Installing masscan"
 
     cd /usr/share
-    git clone https://github.com/robertdavidgraham/masscan masscan >/dev/null 2>/dev/null
+    git clone https://github.com/robertdavidgraham/masscan masscan
     cd masscan
-    make >/dev/null 2>/dev/null
-    make install >/dev/null 2>/dev/null
+    make
+    make install
     echo "  + DONE"
 }
 
@@ -133,8 +135,8 @@ install_subfinder(){
     then
         echo "[*] Installing subfinder"
         #cd /usr/local/
-        go get github.com/projectdiscovery/subfinder/cmd/subfinder >/dev/null 2>/dev/null
-        #go get github.com/subfinder/subfinder >/dev/null 2>/dev/null
+        go get github.com/projectdiscovery/subfinder/cmd/subfinder
+        #go get github.com/subfinder/subfinder
         #cd ${GOPATH}/src/github.com/subfinder/subfinder
         #go build
         echo "  + NOTE: you must configure your subfinder with your own api keys"
@@ -154,8 +156,8 @@ install_amass() {
         echo "[*] Installing Amass"
         mkdir -p ${GOPATH}/src/github.com/
         cd ${GOPATH}/src/github.com/
-        go get -u github.com/OWASP/Amass/... >/dev/null 2>/dev/null
-        go install ./... >/dev/null 2>/dev/null
+        go get -u github.com/OWASP/Amass/...
+        go install ./...
         echo "  + DONE"
     fi
 
@@ -168,8 +170,8 @@ install_wapp() {
     fi
     echo "[*] Installing WappAlyzer"
 
-    apt-get -y install nodejs npm jq >/dev/null 2>/dev/null
-    npm i -g wappalyzer >/dev/null 2>/dev/null
+    apt-get -y install nodejs npm jq
+    npm i -g wappalyzer
     ln -s /usr/local/lib/node_modules/wappalyzer/cli.js /usr/bin/wappalyzer
     echo "  + DONE"
 }
@@ -182,7 +184,7 @@ install_eyewitness() {
     echo "[*] Installing EyeWitness"
 
     cd /usr/share/
-    git clone https://github.com/FortyNorthSecurity/EyeWitness.git eyewitness >/dev/null 2>/dev/null
+    git clone https://github.com/FortyNorthSecurity/EyeWitness.git eyewitness
     echo "#!/bin/bash" > /usr/bin/eyewitness
     echo "python /usr/share/eyewitness/EyeWitness.py \$@" >> /usr/bin/eyewitness
     chmod 755 /usr/bin/eyewitness
@@ -197,7 +199,7 @@ install_masstomap() {
     echo "[*] Installing Masstomap"
 
     cd /usr/share/
-    git clone https://github.com/dogasantos/masstomap.git masstomap >/dev/null 2>/dev/null
+    git clone https://github.com/dogasantos/masstomap.git masstomap
     echo "#!/bin/bash" > /usr/bin/masstomap
     echo "python /usr/share/masstomap/masstomap.py \$@" >> /usr/bin/masstomap
     cd masstomap
@@ -215,8 +217,8 @@ install_linkfinder() {
     echo "[*] Installing Linkfinder"
 
     cd /usr/share
-    git clone https://github.com/GerbenJavado/LinkFinder.git linkfinder >/dev/null 2>/dev/null
-    pip install jsbeautifier argparse >/dev/null 2>/dev/null
+    git clone https://github.com/GerbenJavado/LinkFinder.git linkfinder
+    pip install jsbeautifier argparse
     echo "#!/bin/bash" >/usr/bin/linkfinder
     echo "python /usr/share/linkfinder/mod_linkfinder.py \$@" >> /usr/bin/linkfinder
     chmod 755 /usr/bin/linkfinder
@@ -230,10 +232,10 @@ install_s3scanner(){
     fi
     echo "[*] Installing s3scanner"
     cd /usr/share/
-    git clone https://github.com/sa7mon/S3Scanner.git s3scanner >/dev/null 2>/dev/null
+    git clone https://github.com/sa7mon/S3Scanner.git s3scanner
     cd s3scanner
-    pip install -r requirements.txt >/dev/null 2>/dev/null
-    apt-get -y install awscli >/dev/null 2>/dev/null
+    pip install -r requirements.txt
+    apt-get -y install awscli
     echo "#!/bin/bash" >/usr/bin/s3scanner
     echo "python /usr/share/s3scanner/mod_s3scanner.py \$@" >> /usr/bin/s3scanner
     chmod 755 /usr/bin/s3scanner
@@ -249,13 +251,13 @@ install_wordlists(){
     mkdir -p /usr/share/wordlists
     cd /usr/share/wordlists
     echo "  + RobotsDisallowed"
-    git clone https://github.com/danielmiessler/RobotsDisallowed.git RobotsDisallowed >/dev/null 2>/dev/null
+    git clone https://github.com/danielmiessler/RobotsDisallowed.git RobotsDisallowed
     echo "  + SecLists"
-    git clone https://github.com/danielmiessler/SecLists.git SecLists >/dev/null 2>/dev/null
+    git clone https://github.com/danielmiessler/SecLists.git SecLists
     #echo "  + Brazillian pt_BR"
-    #git clone https://github.com/dogasantos/ptbr-wordlist.git ptbr-wordlist >/dev/null 2>/dev/null
+    #git clone https://github.com/dogasantos/ptbr-wordlist.git ptbr-wordlist
     echo "  + Commonspeak2"
-    git clone https://github.com/assetnote/commonspeak2-wordlists.git  >/dev/null 2>/dev/null
+    git clone https://github.com/assetnote/commonspeak2-wordlists.git
 
 
 }
@@ -265,9 +267,10 @@ install_wordlists(){
 #AJUN_GIT="https://github.com/s0md3v/Arjun.git"  # NEEDS PYTHON 3.4
 
 echo "[*] Installing gcc make and pcap"
-apt-get -y install git gcc wget curl make libpcap-dev zlib1g-dev libjpeg-dev zlib1g-dev libjpeg-dev python-opencv python-lxml >/dev/null 2>/dev/null
+apt-get -y install gcc wget curl make libpcap-dev zlib1g-dev libjpeg-dev
+apt-get -y install python-opencv python-lxml
 echo "[*] Installing python dependencies"
-pip install -r requirements.txt >/dev/null 2>/dev/null
+pip install -r requirements.txt
 
 
 prepare
