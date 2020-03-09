@@ -151,7 +151,7 @@ install_subfinder(){
 
 install_sublist3r(){
 
-    if [ -d  /usr/share/Sublist3r ]
+    if [ ! -d  /usr/share/Sublist3r ]
     then
         echo "[*] Installing Sublist3r"
         cd /usr/share/
@@ -254,7 +254,7 @@ install_s3scanner(){
     pip install -r requirements.txt
     apt-get -y install awscli
     echo "#!/bin/bash" >/usr/bin/s3scanner
-    echo "python /usr/share/s3scanner/mod_s3scanner.py \$@" >> /usr/bin/s3scanner
+    echo "python /usr/share/s3scanner/s3scanner.py \$@" >> /usr/bin/s3scanner
     chmod 755 /usr/bin/s3scanner
     echo "  + NOTE: you must configure your awscli with your own aws key by using"
     echo "  + command: aws configure"
