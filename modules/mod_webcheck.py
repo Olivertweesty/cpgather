@@ -10,6 +10,7 @@ from urllib3.exceptions import InsecureRequestWarning
 import json
 from bs4 import BeautifulSoup
 from base64 import b64encode
+import zlib
 
 
 try:
@@ -189,7 +190,7 @@ def getUrl(url,timeout):
 
     ret['headers'] = r.headers
     ret['stack'] = execWappalyzer(url)
-    ret['content'] = b64encode(r.content)
+    ret['content'] = b64encode(zlib.compress(r.content))
 
     return ret
 
