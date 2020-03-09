@@ -26,10 +26,10 @@ prepare()
     export GOBIN=$GOPATH/bin
     export PATH=$PATH:$GOPATH:$GOBIN:$GOROOT/bin
 
-    echo "GOROOT=/usr/local/go" >> ~/.bash_profile
-    echo "GOPATH=/usr/share/go" >> ~/.bash_profile
-    echo 'GOBIN=$GOPATH/bin' >> ~/.bash_profile
-    echo 'PATH=$PATH:$GOPATH:$GOBIN:$GOROOT/bin' >> ~/.bash_profile
+    echo "GOROOT=/usr/local/go" >> ~/.bashrc
+    echo "GOPATH=/usr/share/go" >> ~/.bashrc
+    echo 'GOBIN=$GOPATH/bin' >> ~/.bashrc
+    echo 'PATH=$PATH:$GOPATH:$GOBIN:$GOROOT/bin' >> ~/.bashrc
 
 
     if [[ $HOSTTYPE == "x86_64" ]]
@@ -288,7 +288,4 @@ install_pynmap
 install_crtsh
 cd $WDIR
 echo "  + DONE"
-
-
-
-
+$SHELL
