@@ -147,6 +147,20 @@ install_subfinder(){
 
 }
 
+install_sublist3r(){
+
+    if [ -d  /usr/share/Sublist3r ]
+    then
+        echo "[*] Installing Sublist3r"
+        cd /usr/share/
+        git clone https://github.com/aboul3la/Sublist3r.git
+        cd /usr/share/Sublist3r
+        pip install -r requirements.txt
+        python setup.py install
+    fi
+
+}
+
 install_amass() {
     if [ -d  ${GOPATH}/src/github.com/OWASP/Amass ]
     then
@@ -280,6 +294,7 @@ install_amass
 install_wapp
 #install_eyewitness
 install_subfinder
+install_sublist3r
 install_masstomap
 #install_linkfinder
 install_s3scanner
