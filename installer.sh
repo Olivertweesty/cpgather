@@ -19,7 +19,7 @@ prepare()
     apt-get -y install build-essential pkg-config
 
 
-    cd /usr/local/
+
     export GOROOT=/usr/local/go
     export GOPATH=/usr/share/go
     export GOBIN=$GOPATH/bin
@@ -30,15 +30,15 @@ prepare()
     echo 'GOBIN=$GOPATH/bin' >> ~/.bashrc
     echo 'PATH=$PATH:$GOPATH:$GOBIN:$GOROOT/bin' >> ~/.bashrc
 
-    mkdir -p ${GOPATH}
-    mkdir -p ${GOROOT}
-
+    cd /usr/local/
     if [[ $HOSTTYPE == "x86_64" ]]
     then
         export arch=amd64
         export GO111MODULE=auto
         if [[ ! -d $GOROOT ]]
         then
+            mkdir -p ${GOROOT}
+            mkdir -p ${GOPATH}
             echo "[*] Download and install Go"
             wget -q https://dl.google.com/go/go1.13.linux-amd64.tar.gz
             tar zxf go1.13.linux-amd64.tar.gz
@@ -53,6 +53,8 @@ prepare()
         export GO111MODULE=on
         if [[ ! -d $GOROOT ]]
         then
+            mkdir -p ${GOROOT}
+            mkdir -p ${GOPATH}
             echo "[*] Download and install Go"
             wget -q https://dl.google.com/go/go1.13.linux-arm64.tar.gz
             tar zxf go1.13.linux-arm64.tar.gz
