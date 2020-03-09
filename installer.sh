@@ -9,7 +9,6 @@ export WDIR=$(pwd)
 
 prepare()
 {
-
     export DEBIAN_FRONTEND=noninteractive
     apt-get update
     if [[ $HOSTTYPE == "arm64" ]]
@@ -31,6 +30,8 @@ prepare()
     echo 'GOBIN=$GOPATH/bin' >> ~/.bashrc
     echo 'PATH=$PATH:$GOPATH:$GOBIN:$GOROOT/bin' >> ~/.bashrc
 
+    mkdir -p ${GOPATH}
+    mkdir -p ${GOROOT}
 
     if [[ $HOSTTYPE == "x86_64" ]]
     then
@@ -269,8 +270,7 @@ install_wordlists(){
 echo "[*] Installing gcc make and pcap"
 apt-get -y install gcc wget curl make libpcap-dev zlib1g-dev libjpeg-dev
 apt-get -y install python-opencv python-lxml python-pip
-echo "[*] Installing python dependencies"
-pip install -r requirements.txt
+
 
 
 prepare
@@ -287,5 +287,9 @@ install_wordlists
 install_pynmap
 install_crtsh
 cd $WDIR
+
+echo "[*] Installing python dependencies"
+pip install -r requirements.txt
+
 echo "  + DONE"
 $SHELL
