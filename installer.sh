@@ -268,7 +268,7 @@ install_wordlists(){
 
 echo "[*] Installing gcc make and pcap"
 apt-get -y install gcc wget curl make libpcap-dev zlib1g-dev libjpeg-dev
-apt-get -y install python-opencv python-lxml
+apt-get -y install python-opencv python-lxml python-pip
 echo "[*] Installing python dependencies"
 pip install -r requirements.txt
 
