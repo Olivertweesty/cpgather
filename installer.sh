@@ -6,23 +6,79 @@
 
 export WDIR=$(pwd)
 
+
+prepare(){
+
+    export DEBIAN_FRONTEND=noninteractive
+    apt-get update
+    if [[ $HOSTTYPE == "arm64" ]]
+    then
+        apt-get -y install python-opencv python-lxml
+    fi
+    apt-get install -y wget  zlib1g-dev libjpeg-dev nginx php7.2-fpm nmap python python-pip vim build-essential pkg-config git
+
+
+    cd /usr/local/
+    export GOROOT=/usr/local/go
+    export GOPATH=/usr/share/go
+    export GOBIN=$GOPATH/bin
+    export PATH=$PATH:$GOPATH:$GOBIN:$GOROOT/bin
+
+    echo "GOROOT=/usr/local/go" >> ~/.bash_profile
+    echo "GOPATH=/usr/share/go" >> ~/.bash_profile
+    echo 'GOBIN=$GOPATH/bin' >> ~/.bash_profile
+    echo 'PATH=$PATH:$GOPATH:$GOBIN:$GOROOT/bin' >> ~/.bash_profile
+
+
+    if [[ $HOSTTYPE == "x86_64" ]]
+    then
+        export arch=amd64
+        export GO111MODULE=auto
+        if [[ ! -d $GOROOT ]]
+        then
+            echo "[*] Download and install Go"
+            wget -q https://dl.google.com/go/go1.13.linux-amd64.tar.gz
+            tar zxf go1.13.linux-amd64.tar.gz
+        else
+            echo "[*] Go is present, no need to download again"
+        fi
+    fi
+
+    if [[ $HOSTTYPE == "arm64" ]]
+    then
+        export arch=arm64
+        export GO111MODULE=on
+        if [[ ! -d $GOROOT ]]
+        then
+            echo "[*] Download and install Go"
+            wget -q https://dl.google.com/go/go1.13.linux-arm64.tar.gz
+            tar zxf go1.13.linux-arm64.tar.gz
+        else
+            echo "[*] Go is present, no need to download again"
+        fi
+    fi
+}
+
+
 install_pynmap(){
-    pip uninstall python-nmap
+    pip uninstall -y python-nmap >/dev/null 2>/dev/null
     cd /tmp
-    git clone https://github.com/dogasantos/python-nmap
+    git clone https://github.com/dogasantos/python-nmap >/dev/null 2>/dev/null
     cd python-nmap
-    python setup.py install
+    python setup.py install >/dev/null 2>/dev/null
+    cd /tmp
+    rm -rf python-nmap
 }
 
 install_crtsh(){
     cd /tmp
-    git clone https://github.com/PaulSec/crt.sh
+    git clone https://github.com/PaulSec/crt.sh >/dev/null 2>/dev/null
     cd crt.sh
-    pip install -r requirements.txt
-    python setup.py install
+    pip install -r requirements.txt >/dev/null 2>/dev/null
+    python setup.py install >/dev/null 2>/dev/null
 }
 
-}install_photon() {
+install_photon() {
     if [ -d  /usr/share/photon ]
     then
         return 1
@@ -37,21 +93,6 @@ install_crtsh(){
     echo "  + DONE"
 }
 
-install_gobuster(){
-    if [ -d  ${GOPATH}/src/github.com/OJ/gobuster ]
-    then
-        return 1
-    fi
-
-    if [ -d  ${GOPATH} ]
-    then
-        echo "[*] Installing Gobuster"
-        go get github.com/OJ/gobuster >/dev/null 2>/dev/null
-        cd ${GOPATH}/src/github.com/OJ/gobuster/
-        go build
-        echo "  + DONE"
-    fi
-}
 
 install_massdns(){
     if [ -d  /usr/share/massdns ]
@@ -92,9 +133,10 @@ install_subfinder(){
     then
         echo "[*] Installing subfinder"
         #cd /usr/local/
-        go get github.com/subfinder/subfinder >/dev/null 2>/dev/null
-        cd ${GOPATH}/src/github.com/subfinder/subfinder
-        go build
+        go get github.com/projectdiscovery/subfinder/cmd/subfinder >/dev/null 2>/dev/null
+        #go get github.com/subfinder/subfinder >/dev/null 2>/dev/null
+        #cd ${GOPATH}/src/github.com/subfinder/subfinder
+        #go build
         echo "  + NOTE: you must configure your subfinder with your own api keys"
         echo "  + Edit the  ~/.config/subfinder/config.json file and set your keys there"
         echo "  + DONE"
@@ -110,7 +152,7 @@ install_amass() {
     if [ -d  ${GOPATH} ]
     then
         echo "[*] Installing Amass"
-
+        mkdir -p ${GOPATH}/src/github.com/
         cd ${GOPATH}/src/github.com/
         go get -u github.com/OWASP/Amass/... >/dev/null 2>/dev/null
         go install ./... >/dev/null 2>/dev/null
@@ -126,7 +168,7 @@ install_wapp() {
     fi
     echo "[*] Installing WappAlyzer"
 
-    apt-get -y install nodejs npm >/dev/null 2>/dev/null
+    apt-get -y install nodejs npm jq >/dev/null 2>/dev/null
     npm i -g wappalyzer >/dev/null 2>/dev/null
     ln -s /usr/local/lib/node_modules/wappalyzer/cli.js /usr/bin/wappalyzer
     echo "  + DONE"
@@ -210,8 +252,8 @@ install_wordlists(){
     git clone https://github.com/danielmiessler/RobotsDisallowed.git RobotsDisallowed >/dev/null 2>/dev/null
     echo "  + SecLists"
     git clone https://github.com/danielmiessler/SecLists.git SecLists >/dev/null 2>/dev/null
-    echo "  + Brazillian pt_BR"
-    git clone https://github.com/dogasantos/ptbr-wordlist.git ptbr-wordlist >/dev/null 2>/dev/null
+    #echo "  + Brazillian pt_BR"
+    #git clone https://github.com/dogasantos/ptbr-wordlist.git ptbr-wordlist >/dev/null 2>/dev/null
     echo "  + Commonspeak2"
     git clone https://github.com/assetnote/commonspeak2-wordlists.git  >/dev/null 2>/dev/null
 
@@ -223,23 +265,22 @@ install_wordlists(){
 #AJUN_GIT="https://github.com/s0md3v/Arjun.git"  # NEEDS PYTHON 3.4
 
 echo "[*] Installing gcc make and pcap"
-apt-get -y install git gcc make libpcap-dev zlib1g-dev libjpeg-dev zlib1g-dev libjpeg-dev python-opencv python-lxml >/dev/null 2>/dev/null
+apt-get -y install git gcc wget curl make libpcap-dev zlib1g-dev libjpeg-dev zlib1g-dev libjpeg-dev python-opencv python-lxml >/dev/null 2>/dev/null
 echo "[*] Installing python dependencies"
 pip install -r requirements.txt >/dev/null 2>/dev/null
 
 
-install_photon
-install_gobuster
+prepare
 install_massdns
-#install_masscan
+install_masscan
 install_amass
 install_wapp
-install_eyewitness
+#install_eyewitness
 install_subfinder
 install_masstomap
-install_linkfinder
+#install_linkfinder
 install_s3scanner
-#install_wordlists
+install_wordlists
 install_pynmap
 install_crtsh
 cd $WDIR
