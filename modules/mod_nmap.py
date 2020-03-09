@@ -41,7 +41,7 @@ def nmap_ExecuteNmapOnTargetList(domain, ports):
                    'ssl-cert,ssl-date,' \
                    'banner'
 
-    NMAP_ARGUMENTS = "--privileged -Pn --open -f -sV " \
+    NMAP_ARGUMENTS = "--privileged  -T4 -Pn --open -f -sV " \
                      "-oG " + domain + ".nmap.grepable" \
                      " -oN  " + domain + ".nmap.text" \
                      " --script=" + NMAP_SCRIPTS + \
