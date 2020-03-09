@@ -168,6 +168,8 @@ def WebDiscovery(nmapObj, domain):
     else:
         list_of_webstack = readFile(domain + ".wapp")
 
+
+
     return webhosts,list_of_webstack
 
 def S3Discovery(domain,verbose):
@@ -226,6 +228,10 @@ if __name__ == "__main__":
 
     if nmapObj is not False:
         list_of_webservers_found, list_of_webstack = WebDiscovery(nmapObj, user_domain)
+
+
+
+
     else:
         print("[*] Web discovery skipped (no open ports found)")
 
