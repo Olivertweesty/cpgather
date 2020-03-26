@@ -22,7 +22,8 @@ cpgather will use other tools like sublist3r, amass, masscan, nmap, s3scanner, w
 - domain.hosts (list of all subdomains found on that domain)
 - domain.ips (list of all ips found on that domain)
 - domain.buckets (s3 buckets)
-- domain.pickle (you won't need to perform portscan again everytime you run this tool)
+- domain.wapp (full weba pplication stack, from jquery to webserver)
+- domain.web (full list of URLS found)
 
 
 ### notes
@@ -41,8 +42,5 @@ but still being able to feed the tool with those awesome tools
 
 Because I like python and I want to learn more of it. It's fun to code python.
 
-### to be added soon
 
-- certspotter
-- crt.sh
 
