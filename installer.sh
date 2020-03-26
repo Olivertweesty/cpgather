@@ -174,6 +174,7 @@ install_amass() {
         mkdir -p ${GOPATH}/src/github.com/
         cd ${GOPATH}/src/github.com/
         go get -u github.com/OWASP/Amass/...
+        cd OWASP/Amass
         go install ./...
         echo "  + DONE"
     fi
@@ -275,7 +276,6 @@ install_wordlists(){
     #git clone https://github.com/dogasantos/ptbr-wordlist.git ptbr-wordlist
     echo "  + Commonspeak2"
     git clone https://github.com/assetnote/commonspeak2-wordlists.git
-
 
 }
 
