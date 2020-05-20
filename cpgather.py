@@ -165,7 +165,10 @@ if __name__ == "__main__":
     user_verbose = args.verbose
     user_subdomain_wordlist = args.wordlist
     user_ports = args.ports
-
+    if not user_ports:
+        user_noscan = True
+    else:
+        user_noscan = False
     banner()
    
     if user_ports is not None:
@@ -194,7 +197,7 @@ if __name__ == "__main__":
             print "  + Nmap report found, loading data..."
         nmapObj = nmap_LoadXmlObject(user_domain + ".nmap.xml")
 
-    if nmapObj is not False:
+    if nmapObj is True:
         list_of_webservers_found, list_of_webstack = WebDiscovery(nmapObj, user_domain)
 
 
