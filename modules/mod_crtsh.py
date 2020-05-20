@@ -13,11 +13,13 @@ def crtshQuery(domain):
         except:
             rawlist = list()
 
-        print(rawlist)
-        print(len(rawlist))
         for item in rawlist:
+            print("="*10)
+            print(item)
             print(len(item))
-            print(type(item))   
+            print(type(item))
+            print("="*10)
+   
             if len(item) > 1:
                 for k, v in item.items():
                     if k == "name_value":

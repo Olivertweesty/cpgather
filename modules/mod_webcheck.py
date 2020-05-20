@@ -18,8 +18,9 @@ try:
 except:
     from urllib.parse import unquote
 
-interesting_header_strings = ["JBoss","Tomcat","Access-Control-Allow-Origin","PHP","BIGipServerexchange","owa_pool","X-OWA-Version"]
+interesting_header_strings = ["JBoss","Tomcat","Access-Control-Allow-Origin","PHP","BIGipServerexchange","owa_pool","X-OWA-Version","JWT"]
 interesting_content_strings = ["javax.faces.ViewState","Telerik.Web.UI.WebResource.axd","Telerik"]
+
 
 web_service_names = ["http","http-proxy","https","https-alt","ssl"]
 
@@ -211,6 +212,7 @@ def RetrieveWebContent(urls):
             else:
                 list_of_webstack.append(dict(wp))
     return list_of_webstack
+
 
 def FindInterestingContent(list_of_webstack):
     intel=list()
