@@ -70,8 +70,8 @@ def TargetDiscovery(domain,wordlist):
     print "  + Running WayBack machine query"
     wayback_found_list = WayBackMachine(domain)
 
-    print "  + Running Crt.sh query"
-    crtsh_found_list = crtshQuery(domain)
+    #print "  + Running Crt.sh query"
+    #crtsh_found_list = crtshQuery(domain)
 
     print "  + Running subfinder (bruteforce mode)"
     execSubfinder(domain,wordlist)
@@ -85,9 +85,9 @@ def TargetDiscovery(domain,wordlist):
     for item in wayback_found_list:
         hosts.append(item.rstrip("\n"))
 
-    print "  + Parsing Crt.sh report"
-    for item in crtsh_found_list:
-        hosts.append(item.rstrip("\n"))
+    #print "  + Parsing Crt.sh report"
+    #for item in crtsh_found_list:
+    #    hosts.append(item.rstrip("\n"))
 
     print "  + Parsing amass report"
     amass_found_list = parseAmass(domain)
