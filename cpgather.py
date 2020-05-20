@@ -174,7 +174,7 @@ if __name__ == "__main__":
         ports="80,443,8080,8443"
     nmapObj = False
 
-    ips,hosts = TargetDiscovery(user_domain,wordlist)
+    ips,hosts = TargetDiscovery(user_domain,user_subdomain_wordlist)
     if len(ips) == 0:
         user_noscan = True
 
