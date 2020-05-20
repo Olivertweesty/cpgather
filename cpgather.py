@@ -32,28 +32,11 @@ RESOLVERS="/usr/share/massdns/lists/resolvers.txt"                              
 global CPPATH
 CPPATH=os.path.dirname(os.path.realpath(__file__))
 
-'''
-What this is about:
-
-OK - receber dominio e/ou lista de ips do escopo
-OK - rodar amass, subfinder e massdns para descobrir os hosts do escopo
-OK - rodar masscan pra descobrir portas abertas
-OK - dns subdomain bforce 
-OK - rodar nmap full
-- validar CPE obtido pelo nmap com vulners ou outro meio
-OK - decobrir destas portas abertas, quais sao webservers/http
-OK - rodar eyewitness para tirar screenshot de todos os webservers encontrados e publicar
-OK - rodar wappalyzer pra identificar stack das aplicacoes
-- validar vulnerabilidades com cada app encontrada através do vulners
-OK - rodar cralwer para validar URLS mapeaveis na aplicacao (primeira pagina)
- - pegar todos os arquivos JS e jogar no LinkFinder para encontrar endpoints
- - usar ffuf e uma wordlist básica por framework/applicacao/contexto + novos endpoits encontrados dentro dos arquivos JS
-'''
 
 def banner():
     print "cpgather "+str(__version__)+" @ dogasantos"
     print "------------------------------------------------"
-    print " Recon, Scan, Detect, Map, Analyze, Hack"
+    print " subdomains, portscan, webstack, "
     print "------------------------------------------------"
 
 def parser_error(errmsg):
@@ -67,20 +50,14 @@ def parse_args():
     parser.error = parser_error
     parser._optionals.title = "Options:"
     parser.add_argument('-d', '--domain', help="Domain name we should work with", required=True)
-    parser.add_argument('-ds', '--dirsearch', help='Enable directory discovery', required=False, action='store_true')
-    parser.add_argument('-ns', '--noscan', help='Do not execute portscan', required=False, action='store_true')
     parser.add_argument('-ps', '--ports', help='Specify comma separated list of ports that should be scanned (all tcp by default)', required=False, nargs='?')
-    parser.add_argument('-b', '--bruteforce', help='Enable FTP and SSH bruteforce', required=False, action='store_true')
-    parser.add_argument('-e', '--tlsssl', help='Enable TLS/SSL checks for common vulnerabilities', required=False, action='store_true')
-    parser.add_argument('-p', '--parameter', help='Enable parameter discovery', required=False, action='store_true')
     parser.add_argument('-v', '--verbose', help='Enable Verbosity',  required=False, action='store_true')
     parser.add_argument('-sw', '--wordlist', help='Specify a wordlist for subdomain discovery (otherwise default one)', required=False, nargs='?')
-    parser.add_argument('-dw', '--dirwordlist', help='Specify a wordlist for directory discovery (otherwise default one)', required=False, nargs='?')
     return parser.parse_args()
 
 
 def TargetDiscovery(domain,wordlist):
-    print "[*] Target Discovery"
+    print "[*] Subdomain discovery phase"
     ips = list()
     hosts = list()
 
@@ -191,7 +168,6 @@ if __name__ == "__main__":
     user_verbose = args.verbose
     user_subdomain_wordlist = args.wordlist
     user_dir_wordlist = args.dirwordlist
-    user_noscan = args.noscan
     user_ports = args.ports
 
     banner()
@@ -203,7 +179,7 @@ if __name__ == "__main__":
     if user_ports is not None:
         ports = user_ports
     else:
-        ports="1-65535"
+        ports="80,443,8080,8443"
     nmapObj = False
 
     ips,hosts = TargetDiscovery(user_domain,wordlist)
@@ -228,8 +204,6 @@ if __name__ == "__main__":
 
     if nmapObj is not False:
         list_of_webservers_found, list_of_webstack = WebDiscovery(nmapObj, user_domain)
-
-
 
 
     else:

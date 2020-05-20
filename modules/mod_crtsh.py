@@ -14,23 +14,23 @@ def crtshQuery(domain):
             rawlist = list()
 
         for item in rawlist:
-            for k, v in item.items():
-                if k == "name_value":
-                    if '@' in v:
-                        continue
-                    if '*' in v:
-                        continue
-                    if checkFqdn(v) == False:
-                        continue
-                    if '\n' in v:
-                        for tok in v.split('\n'):
-                            found.append(tok)
-                    else:
-                        found.append(v)
+            if len(item) > 1:
+                for k, v in item.items():
+                    if k == "name_value":
+                        if '@' in v:
+                            continue
+                        if '*' in v:
+                            continue
+                        if checkFqdn(v) == False:
+                            continue
+                        if '\n' in v:
+                            for tok in v.split('\n'):
+                                found.append(tok)
+                        else:
+                            found.append(v)
 
         found = list(set(found))
         saveFile(domain + ".sub.crtsh", found)
-
     else:
 
         temp = readFile(domain + ".sub.crtsh")
