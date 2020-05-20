@@ -162,8 +162,6 @@ def S3Discovery(domain,verbose):
 if __name__ == "__main__":
     args = parse_args()
     user_domain = args.domain
-    user_bruteforce = args.bruteforce
-    user_tlsssl = args.tlsssl
     user_verbose = args.verbose
     user_subdomain_wordlist = args.wordlist
     user_ports = args.ports
