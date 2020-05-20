@@ -3,6 +3,7 @@
 from misc import readFile, saveFile, checkFqdn
 from crtsh import crtshAPI
 import os
+import json
 
 
 def crtshQuery(domain):
@@ -19,21 +20,20 @@ def crtshQuery(domain):
             print(len(item))
             print(type(item))
             print("="*10)
-   
-            if len(item) > 1:
-                for k, v in item.items():
-                    if k == "name_value":
-                        if '@' in v:
-                            continue
-                        if '*' in v:
-                            continue
-                        if checkFqdn(v) == False:
-                            continue
-                        if '\n' in v:
-                            for tok in v.split('\n'):
-                                found.append(tok)
-                        else:
-                            found.append(v)
+            item = json.loads(item)
+            for k, v in item.items():
+                if k == "name_value":
+                    if '@' in v:
+                        continue
+                    if '*' in v:
+                        continue
+                    if checkFqdn(v) == False:
+                        continue
+                    if '\n' in v:
+                        for tok in v.split('\n'):
+                            found.append(tok)
+                    else:
+                        found.append(v)
 
         found = list(set(found))
         saveFile(domain + ".sub.crtsh", found)
