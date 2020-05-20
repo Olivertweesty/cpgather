@@ -13,7 +13,8 @@ def crtshQuery(domain):
         except:
             rawlist = list()
 
-        
+        print(rawlist)
+        print(len(rawlist))
         for item in rawlist:
             print(len(item))
             print(type(item))   
