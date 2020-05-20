@@ -12,7 +12,7 @@ def getSubfinderRawFile(domain):
 def execSubfinder(domain,wordlist):
     if os.path.isfile(domain + ".subfinder") == False or os.path.getsize(domain + ".subfinder") == 0:
         p = subprocess.Popen(
-            ['subfinder', '-d', domain, '-b','-w',wordlist, '-t', '100','-nW','-o', domain + ".subfinder"],
+            ['subfinder', '-d', str(domain), '-b','-w', str(wordlist), '-t', '100','-nW','-o', str(domain) + ".subfinder"],
             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         out, err = p.communicate()
     else:
