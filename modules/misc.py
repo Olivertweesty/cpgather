@@ -120,7 +120,10 @@ def isGlobalIpv4(ipaddr):
     try:
         ipObj = ipaddress.ip_address(unicode(ipaddr))
     except:
-        return False
+        try:
+            ipObj = ipaddress.ip_address(ipaddr)
+        except:
+            return False
     if ipObj.is_global and ipObj.version == 4:
         return True
     else:
