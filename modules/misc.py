@@ -118,8 +118,9 @@ def getFullHostList(domain):
 
 def isGlobalIpv4(ipaddr):
     print("check: " + str(ipaddr))
-    print("type:")
-    print(type(ipaddr))
+    ipObj = ipaddress.ip_address(unicode(ipaddr))
+    print(type(ipObj))
+
     try:
         ipObj = ipaddress.ip_address(unicode(ipaddr))
     except:
