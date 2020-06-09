@@ -40,13 +40,29 @@ prepare()
             mkdir -p ${GOROOT}
             mkdir -p ${GOPATH}
             echo "[*] Download and install Go"
-            wget -q https://dl.google.com/go/go1.13.linux-amd64.tar.gz
-            tar zxf go1.13.linux-amd64.tar.gz
+            wget -q https://dl.google.com/go/go1.14.4.linux-amd64.tar.gz
+            tar zxf go1.14.4.linux-amd64.tar.gz
         else
             echo "[*] Go is present, no need to download again"
         fi
     fi
-
+    
+    if [[ $HOSTTYPE == "i686" ]]
+    then
+        export arch=i686
+        export GO111MODULE=auto
+        if [[ ! -d $GOROOT ]]
+        then
+            mkdir -p ${GOROOT}
+            mkdir -p ${GOPATH}
+            echo "[*] Download and install Go"
+            wget -q https://dl.google.com/go/go1.14.4.linux-386.tar.gz
+            tar zxf go1.14.4.linux-386.tar.gz
+        else
+            echo "[*] Go is present, no need to download again"
+        fi
+    fi
+    
     if [[ $HOSTTYPE == "arm64" ]]
     then
         export arch=arm64
@@ -56,8 +72,8 @@ prepare()
             mkdir -p ${GOROOT}
             mkdir -p ${GOPATH}
             echo "[*] Download and install Go"
-            wget -q https://dl.google.com/go/go1.13.linux-arm64.tar.gz
-            tar zxf go1.13.linux-arm64.tar.gz
+            wget -q https://dl.google.com/go/go1.14.4.linux-arm64.tar.gz
+            tar zxf go1.14.4.linux-arm64.tar.gz
         else
             echo "[*] Go is present, no need to download again"
         fi
