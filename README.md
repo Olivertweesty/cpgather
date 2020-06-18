@@ -32,15 +32,10 @@ cpgather will use other tools like sublist3r, amass, masscan, nmap, s3scanner, w
 
 - This tool uses pickle (be aware of security implications) to dump nmap object report on file, and load it again everytime you run it. So the scan should be executed just 1 time.
 
-
-### future
-
-diminish dependency on other tools by creating it's own mechanisms
-but still being able to feed the tool with those awesome tools
-
 ### motivation and why python instead of bash or go
 
-Because I like python and I want to learn more of it. It's fun to code python.
+While multitasking it's better to automate a few common tasks.
+The simpler, the better
 
-
+I've seen this being made through aliases and bash scripts, but I like to code my scripts in python. It's an opportunity to learn more aspects of Python coding and make of this a win/win.
 
