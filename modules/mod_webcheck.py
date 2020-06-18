@@ -97,7 +97,6 @@ def wappFormat(wappObj):
                 if '%' in item:
                     # item = unquote(str(item))
                     item = unquote(item.decode('utf-8', 'ignore'))
-
                 if "javascript:void(0)" in item:
                     continue
                 if "#" == item:
