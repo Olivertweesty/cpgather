@@ -165,10 +165,6 @@ if __name__ == "__main__":
     user_verbose = args.verbose
     user_subdomain_wordlist = args.wordlist
     user_ports = args.ports
-    if not user_ports:
-        user_noscan = True
-    else:
-        user_noscan = False
     banner()
    
     if user_ports is not None:
@@ -176,7 +172,7 @@ if __name__ == "__main__":
     else:
         ports="80,443,8080,8443"
     nmapObj = False
-       
+    
     ips,hosts = TargetDiscovery(user_domain,user_subdomain_wordlist)
     if len(ips) == 0:
         user_noscan = True
