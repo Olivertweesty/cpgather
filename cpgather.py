@@ -166,7 +166,7 @@ if __name__ == "__main__":
     user_subdomain_wordlist = args.wordlist
     user_ports = args.ports
     banner()
-   
+
     if user_ports is not None:
         ports = user_ports
     else:
@@ -176,6 +176,8 @@ if __name__ == "__main__":
     ips,hosts = TargetDiscovery(user_domain,user_subdomain_wordlist)
     if len(ips) == 0:
         user_noscan = True
+    else: 
+        user_noscan = False
 
     if not user_noscan:
         print "[*] Port Scanning phase started"
