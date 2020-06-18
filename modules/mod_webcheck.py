@@ -7,6 +7,7 @@ from modules.misc import sort_uniq
 import concurrent.futures
 import requests
 from urllib3.exceptions import InsecureRequestWarning
+from urllib3 import disable_warnings
 import json
 from bs4 import BeautifulSoup
 from base64 import b64encode
@@ -199,7 +200,7 @@ def getUrl(url,timeout):
 def RetrieveWebContent(urls):
     list_of_webstack = list()
     requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
-    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+    disable_warnings(InsecureRequestWarning)
 
     requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS = 'ALL'
     # We can use a with statement to ensure threads are cleaned up promptly
