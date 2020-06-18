@@ -197,7 +197,7 @@ if __name__ == "__main__":
             print "  + Nmap report found, loading data..."
         nmapObj = nmap_LoadXmlObject(user_domain + ".nmap.xml")
 
-    if nmapObj is True:
+    if nmapObj:
         list_of_webservers_found, list_of_webstack = WebDiscovery(nmapObj, user_domain)
 
 
