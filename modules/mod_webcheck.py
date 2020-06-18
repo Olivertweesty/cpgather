@@ -198,6 +198,8 @@ def getUrl(url,timeout):
 def RetrieveWebContent(urls):
     list_of_webstack = list()
     requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
+    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
     requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS = 'ALL'
     # We can use a with statement to ensure threads are cleaned up promptly
     with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
