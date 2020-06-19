@@ -96,8 +96,7 @@ def wappFormat(wappObj):
                 item = item.replace(" ", '')
                 item = item.replace("\n", '')
                 if '%' in item:
-                    # item = unquote(str(item))
-                    item = unquote(item.decode('utf-8', 'ignore'))
+                    item = unquote(item.encode('utf-8', 'ignore'))
                 if "javascript:void(0)" in item:
                     continue
                 if "#" == item:
@@ -113,6 +112,7 @@ def wappFormat(wappObj):
                 item = item.rstrip()
                 if '%' in item:
                     item = unquote(str(item))
+                    
                 if "javascript:" in item:
                     continue
                 if "#" == item:
