@@ -24,7 +24,7 @@ from modules.mod_waybackmachine import WayBackMachine
 from modules.mod_crtsh import crtshQuery
 
 from modules.mod_forwarddns import parseForwardDnsFile
-from modules.mod_webcheck import FindWeb, RetrieveWebContent, wappFormat
+from modules.mod_webcheck import FindWeb, RetrieveWebContent, wappFormat, normalize_jsfiles
 
 SUBWL="/usr/share/wordlists/commonspeak2-wordlists/subdomains/subdomains.txt"
 RESOLVERS="/usr/share/massdns/lists/resolvers.txt"                                      # List of open DNS we can use to resolve / brute dns subdomains
@@ -142,6 +142,9 @@ def WebDiscovery(nmapObj, domain):
             njson = json.dumps(item)
             appendFile(domain + ".wapp", njson)
             appendFile(domain + ".web." + str(item['status']) + ".txt", item['url']+"\n")
+            jsfiles=normalize_jsfiles(item['url'],item['js'])
+            appendFile(domain + ".web.jsfiles", jsfiles+"\n")
+
     else:
         list_of_webstack = readFile(domain + ".wapp")
 

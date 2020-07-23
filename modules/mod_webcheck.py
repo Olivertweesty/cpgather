@@ -143,6 +143,7 @@ def wappFormat(wappObj):
                     new_data['js'] = scripts
 
 
+
                 wappalyzer_result = wappjson.get('applications')
                 if len(wappalyzer_result) > 0:
                     wapp = list()
@@ -162,6 +163,15 @@ def wappFormat(wappObj):
                 final_content.append(dict(new_data))
 
     return final_content
+
+'''
+
+'''
+def normalize_jsfiles(origin_url,js_list)
+    print("+JS ORIGIN: ")
+    for item in js_list:
+        print(" + %s",str(item))
+
 
 def getUrl(url,timeout):
     ret=dict()
@@ -195,17 +205,14 @@ def getUrl(url,timeout):
     ret['stack'] = execWappalyzer(url)
     ret['content'] = b64encode(zlib.compress(r.content))
 
+
     return ret
 
 def RetrieveWebContent(urls):
     list_of_webstack = list()
     requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
-    disable_warnings(InsecureRequestWarning)
-
     requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS = 'ALL'
-    # We can use a with statement to ensure threads are cleaned up promptly
     with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
-        # Start the load operations and mark each future with its URL
         future_to_url = { executor.submit(getUrl, url, 60): url for url in urls }
         for future in concurrent.futures.as_completed(future_to_url):
             url = future_to_url[future]
