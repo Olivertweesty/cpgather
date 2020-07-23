@@ -167,7 +167,7 @@ def wappFormat(wappObj):
 '''
 
 '''
-def normalize_jsfiles(origin_url,js_list)
+def normalize_jsfiles(origin_url,js_list):
     print("+JS ORIGIN: ")
     for item in js_list:
         print(" + %s",str(item))
