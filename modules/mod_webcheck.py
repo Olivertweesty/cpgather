@@ -168,9 +168,16 @@ def wappFormat(wappObj):
 
 '''
 def normalize_jsfiles(origin_url,js_list):
-    print("+JS ORIGIN: ")
-    for item in js_list:
-        print(" + %s",str(item))
+    print("+JS ORIGIN: " +str(origin_url))
+    lista=list()
+    if len(js_list) > 0:
+        for item in js_list:
+            print(" + %s",str(item))
+            if "http" in item:
+                lista.append(item)
+            else:
+                lista.append(origin_url+"/"+item)
+    return lista
 
 
 def getUrl(url,timeout):

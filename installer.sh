@@ -108,7 +108,7 @@ install_photon() {
     cd /usr/share
     git clone https://github.com/s0md3v/Photon.git photon
     pip install -r photon/requirements.txt
-    echo "#!/bin/bash" > /usr/bin/photon
+    echo '#!/bin/bash' > /usr/bin/photon
     echo "python3 /usr/share/photon/mod_photon.py \$@" >> /usr/bin/photon
     chmod 755 /usr/bin/photon
     echo "  + DONE"
@@ -219,7 +219,7 @@ install_eyewitness() {
 
     cd /usr/share/
     git clone https://github.com/FortyNorthSecurity/EyeWitness.git eyewitness
-    echo "#!/bin/bash" > /usr/bin/eyewitness
+    echo '#!/bin/bash' > /usr/bin/eyewitness
     echo "python /usr/share/eyewitness/EyeWitness.py \$@" >> /usr/bin/eyewitness
     chmod 755 /usr/bin/eyewitness
     echo "  + DONE"
@@ -234,7 +234,7 @@ install_masstomap() {
 
     cd /usr/share/
     git clone https://github.com/dogasantos/masstomap.git masstomap
-    echo "#!/bin/bash" > /usr/bin/masstomap
+    echo '#!/bin/bash' > /usr/bin/masstomap
     echo "python /usr/share/masstomap/masstomap.py \$@" >> /usr/bin/masstomap
     cd masstomap
     pip install -r requirements.txt
@@ -253,7 +253,7 @@ install_linkfinder() {
     cd /usr/share
     git clone https://github.com/GerbenJavado/LinkFinder.git linkfinder
     pip install jsbeautifier argparse
-    echo "#!/bin/bash" >/usr/bin/linkfinder
+    echo '#!/bin/bash' >/usr/bin/linkfinder
     echo "python /usr/share/linkfinder/mod_linkfinder.py \$@" >> /usr/bin/linkfinder
     chmod 755 /usr/bin/linkfinder
     echo "  + DONE"
@@ -270,7 +270,7 @@ install_s3scanner(){
     cd s3scanner
     pip install -r requirements.txt
     apt-get -y install awscli
-    echo "#!/bin/bash" >/usr/bin/s3scanner
+    echo '#!/bin/bash' >/usr/bin/s3scanner
     echo "python /usr/share/s3scanner/s3scanner.py \$@" >> /usr/bin/s3scanner
     chmod 755 /usr/bin/s3scanner
     echo "  + NOTE: you must configure your awscli with your own aws key by using"
