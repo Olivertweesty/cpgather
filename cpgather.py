@@ -144,7 +144,7 @@ def WebDiscovery(nmapObj, domain):
             appendFile(domain + ".web." + str(item['status']) + ".txt", item['url']+"\n")
             jsfiles=normalize_jsfiles(item['url'],item['js'])
             #appendFile(domain + ".web.jsfiles", jsfiles+"\n")
-            print(jsfiles)
+            #print(jsfiles)
 
     else:
         list_of_webstack = readFile(domain + ".wapp")
