@@ -81,7 +81,7 @@ def parseUrlProtoHostPort(urlstr):
     return proto,host,port
 
 def getUrlPath(url):
-    uridata = urlparse(urlstr)
+    uridata = urlparse(url)
     return uridata.path
 
 def getFullHostList(domain):
