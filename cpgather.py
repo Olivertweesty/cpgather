@@ -150,7 +150,7 @@ def WebDiscovery(nmapObj, domain):
 
     if os.path.isfile(domain+".js.allfiles") == False or os.path.getsize(domain+".js.allfiles") == 0:
         list_of_js_files_all = readFile(domain + ".js.allfiles")
-        list_of_jsdirs_uri = GetJsCommonDirectoriesURI(list_of_js_files_all)
+        list_of_jsdirs_uri = GetJsCommonDirectoriesURI(domain,list_of_js_files_all)
         list_of_js_dir = list()
         for js_dir_uri in list_of_jsdirs_uri:
             js_dir_path = getUrlPath(js_dir_uri).replace("//","/")
