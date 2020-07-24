@@ -143,13 +143,12 @@ def WebDiscovery(nmapObj, domain):
             njson = json.dumps(item)
             appendFile(domain + ".wapp", '"host":')
             appendFile(domain + ".wapp", njson)
-            appendFile(domain + ".wapp", '}')
             if itemcount < totalsize:
                 appendFile(domain + ".wapp", ',')
             itemcount+=1
             appendFile(domain + ".web." + str(item['status']) + ".txt", item['url']+"\n")
 
-        appendFile(domain + ".wapp", '}')
+        appendFile(domain + ".wapp", '}}')
     else:
         list_of_webstack = readFile(domain + ".wapp")
 
