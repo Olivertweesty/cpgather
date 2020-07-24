@@ -133,7 +133,7 @@ def WebDiscovery(nmapObj, domain):
         webhosts = readFile(domain + ".web")
 
 
-    print "[*] Web Stack identification via (Wappalyzer)"
+    print "[*] Web Stack identification via Wappalyzer"
     if os.path.isfile(domain+".wapp") == False or os.path.getsize(domain+".wapp") == 0:
         list_of_webstack = RetrieveWebContent(webhosts)
         list_of_webstack = wappFormat(list_of_webstack)
@@ -142,13 +142,16 @@ def WebDiscovery(nmapObj, domain):
             njson = json.dumps(item)
             appendFile(domain + ".wapp", njson)
             appendFile(domain + ".web." + str(item['status']) + ".txt", item['url']+"\n")
-            list_of_js_files_all=normalize_jsfiles(item['url'],item['js'])
-            for jsfile in list_of_js_files_all:
-                appendFile(domain + ".js.allfiles", jsfile+"\n")
     else:
         list_of_webstack = readFile(domain + ".wapp")
 
+    print "[*] Javascript files identification"
     if os.path.isfile(domain+".js.allfiles") == False or os.path.getsize(domain+".js.allfiles") == 0:
+        for item in list_of_webstack:
+            list_of_js_files_all=normalize_jsfiles(item['url'],item['js'])
+            for jsfile in list_of_js_files_all:
+                appendFile(domain + ".js.allfiles", jsfile+"\n")
+
         list_of_js_files_all = readFile(domain + ".js.allfiles")
         list_of_jsdirs_uri = GetJsCommonDirectoriesURI(domain,list_of_js_files_all)
         list_of_js_dir = list()
@@ -162,8 +165,11 @@ def WebDiscovery(nmapObj, domain):
         # list_of_js_dir holds the path portion of that uri:
         # /dir1/dir2/js/
         
-        appendFile(domain + ".js.dirs", list_of_js_dir)
-        appendFile(domain + ".js.dirsuri", js_dir_uri)
+        for jsdir in list_of_js_dir:
+            appendFile(domain + ".js.dirs", jsdir)
+        for jsdiruri in js_dir_uri:
+            appendFile(domain + ".js.dirsuri", jsdiruri)
+    
 
     return webhosts,list_of_webstack
 
