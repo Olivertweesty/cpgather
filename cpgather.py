@@ -24,7 +24,7 @@ from modules.mod_waybackmachine import WayBackMachine
 from modules.mod_crtsh import crtshQuery
 
 from modules.mod_forwarddns import parseForwardDnsFile
-from modules.mod_webcheck import FindWeb, RetrieveWebContent, wappFormat, normalize_jsfiles
+from modules.mod_webcheck import FindWeb, RetrieveWebContent, wappFormat, normalize_jsfiles, GetJsCommonDirectoriesURI, getUrlPath
 
 SUBWL="/usr/share/wordlists/commonspeak2-wordlists/subdomains/subdomains.txt"
 RESOLVERS="/usr/share/massdns/lists/resolvers.txt"                                      # List of open DNS we can use to resolve / brute dns subdomains
@@ -144,11 +144,26 @@ def WebDiscovery(nmapObj, domain):
             appendFile(domain + ".web." + str(item['status']) + ".txt", item['url']+"\n")
             list_of_js_files_all=normalize_jsfiles(item['url'],item['js'])
             for jsfile in list_of_js_files_all:
-                appendFile(domain + ".web.jsfiles", jsfile+"\n")
+                appendFile(domain + ".js.allfiles", jsfile+"\n")
     else:
         list_of_webstack = readFile(domain + ".wapp")
 
-
+    if os.path.isfile(domain+".js.allfiles") == False or os.path.getsize(domain+".js.allfiles") == 0:
+        list_of_js_files_all = readFile(domain + ".js.allfiles")
+        list_of_jsdirs_uri = GetJsCommonDirectoriesURI(list_of_js_files_all)
+        list_of_js_dir = list()
+        for js_dir_uri in list_of_jsdirs_uri:
+            js_dir_path = getUrlPath(js_dir_uri).replace("//","/")
+            list_of_js_dir.append(js_dir_path)
+        list_of_js_dir = list(set(list_of_js_dir))
+        # js_dir_uri holds the full uri of directories with js files:
+        # http://target/dir1/dir2/js/
+        # 
+        # list_of_js_dir holds the path portion of that uri:
+        # /dir1/dir2/js/
+        
+        appendFile(domain + ".js.dirs", list_of_js_dir)
+        appendFile(domain + ".js.dirsuri", js_dir_uri)
 
     return webhosts,list_of_webstack
 

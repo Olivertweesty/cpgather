@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from modules.mod_massdns import parseMassdnsStruct, getAllipsFor
 from modules.mod_wappalyzer import execWappalyzer
-from modules.misc import sort_uniq
+from modules.misc import sort_uniq, getUrlPath, parseUrlProtoHostPort
 
 import concurrent.futures
 import requests
@@ -214,12 +214,28 @@ def getUrl(url,timeout):
 
     return ret
 
+def GetJsCommonDirectoriesURI(domain,list_of_js_files):
+    list_of_common_js_dirs_uri = list()
+    for js_url in list_of_js_files:
+        proto,host,port = parseUrlProtoHostPort(js_url)
+        if domain in host:
+            filepath = getUrlPath(js_url)
+
+            uri_js_dir = js_url.replace(os.path.basename(filepath),'')
+            if '?' in uri_js_dir:
+                uri_js_dir = uri_js_dir.split('?')[0]
+            if "/./" in uri_js_dir:
+                uri_js_dir = uri_js_dir.replace("/./","/")
+            uri_js_dir = uri_js_dir.rstrip()
+            list_of_common_js_dirs_uri.append(uri_js_dir)
+    return list(set(list_of_common_js_dirs_uri))
+
+
 def RetrieveWebContent(urls):
     list_of_webstack = list()
     #requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
     import urllib3
     urllib3.disable_warnings()
-
     requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS = 'ALL'
     with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
         future_to_url = { executor.submit(getUrl, url, 60): url for url in urls }
