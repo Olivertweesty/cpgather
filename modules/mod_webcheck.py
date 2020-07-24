@@ -8,7 +8,7 @@ import concurrent.futures
 import requests
 from urllib3.exceptions import InsecureRequestWarning
 from urllib3 import disable_warnings
-import json
+import json, os
 from bs4 import BeautifulSoup
 from base64 import b64encode
 import zlib
