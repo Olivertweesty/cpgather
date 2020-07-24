@@ -146,8 +146,8 @@ def WebDiscovery(nmapObj, domain):
 
     print "[*] Javascript files identification"
     if os.path.isfile(domain+".js.allfiles") == False or os.path.getsize(domain+".js.allfiles") == 0:
-        for item in list_of_webstack:
-            print(item)
+        for ritem in list_of_webstack:
+            item = json.loads(ritem)
             list_of_js_files_all=normalize_jsfiles(item['url'],item['js'])
             for jsfile in list_of_js_files_all:
                 appendFile(domain + ".js.allfiles", jsfile+"\n")
