@@ -142,11 +142,12 @@ def WebDiscovery(nmapObj, domain):
             appendFile(domain + ".wapp", njson)
             appendFile(domain + ".web." + str(item['status']) + ".txt", item['url']+"\n")
     else:
-        list_of_webstack = readFile(domain + ".wapp").split('\n')
+        list_of_webstack = readFile(domain + ".wapp")
 
     print "[*] Javascript files identification"
     if os.path.isfile(domain+".js.allfiles") == False or os.path.getsize(domain+".js.allfiles") == 0:
         for item in list_of_webstack:
+            print(item)
             list_of_js_files_all=normalize_jsfiles(item['url'],item['js'])
             for jsfile in list_of_js_files_all:
                 appendFile(domain + ".js.allfiles", jsfile+"\n")
