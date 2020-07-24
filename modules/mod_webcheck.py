@@ -79,6 +79,7 @@ def wappFormat(wappObj):
         new_data = dict()
         wappjson = json.loads(each['stack'][0])
 
+
         try:
             if each['a']:
                 havelinks = True
@@ -233,9 +234,8 @@ def GetJsCommonDirectoriesURI(domain,list_of_js_files):
 
 def RetrieveWebContent(urls):
     list_of_webstack = list()
-    #requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
-    import urllib3
-    urllib3.disable_warnings()
+    requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
+    disable_warnings()
     requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS = 'ALL'
     with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
         future_to_url = { executor.submit(getUrl, url, 60): url for url in urls }
