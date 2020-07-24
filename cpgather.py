@@ -152,33 +152,38 @@ def WebDiscovery(nmapObj, domain):
         list_of_webstack = readFile(domain + ".wapp")
 
 
-
-
     print "[*] Javascript files identification"
     if os.path.isfile(domain+".js.allfiles") == False or os.path.getsize(domain+".js.allfiles") == 0:
-        for ritem in list_of_webstack:
-            item = json.dumps(ritem)
-            list_of_js_files_all=normalize_jsfiles(item['url'],item['js'])
-            for jsfile in list_of_js_files_all:
-                appendFile(domain + ".js.allfiles", jsfile+"\n")
+        list_of_js_files_all=list()
+        all_lists_of_all_js_of_all_nodes=list()
+        list_of_webstack = readFile(domain+".wapp")
+        for rawdata in list_of_webstack:
+            jdata = json.loads(rawdata)['data']
+            for jnode in jdata:
+                for js in normalize_jsfiles(jnode['url'],jnode['js']):
+                    list_of_js_files_all.append(js)
+                    appendFile(domain + ".js.allfiles", js+"\n")
 
-        list_of_js_files_all = readFile(domain + ".js.allfiles")
+        #list_of_js_files_all = readFile(domain + ".js.allfiles")
         list_of_jsdirs_uri = GetJsCommonDirectoriesURI(domain,list_of_js_files_all)
         list_of_js_dir = list()
-        for js_dir_uri in list_of_jsdirs_uri:
-            js_dir_path = getUrlPath(js_dir_uri).replace("//","/")
+
+        for js_dir_uri_item in list_of_jsdirs_uri:
+            js_dir_path = getUrlPath(js_dir_uri_item).replace("//","/")
             list_of_js_dir.append(js_dir_path)
+
         list_of_js_dir = list(set(list_of_js_dir))
-        # js_dir_uri holds the full uri of directories with js files:
-        # http://target/dir1/dir2/js/
-        # 
-        # list_of_js_dir holds the path portion of that uri:
-        # /dir1/dir2/js/
-        
+
+            # js_dir_uri holds the full uri of directories with js files:
+            # http://target/dir1/dir2/js/
+            # 
+            # list_of_js_dir holds the path portion of that uri:
+            # /dir1/dir2/js/
         for jsdir in list_of_js_dir:
-            appendFile(domain + ".js.dirs", jsdir)
-        for jsdiruri in js_dir_uri:
-            appendFile(domain + ".js.dirsuri", jsdiruri)
+            appendFile(domain + ".js.dirs", jsdir +"\n")
+        
+        for jsdiruri in list_of_jsdirs_uri:
+            appendFile(domain + ".js.dirsuri", jsdiruri  +"\n")
     
 
     return webhosts,list_of_webstack
