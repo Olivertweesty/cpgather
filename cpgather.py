@@ -138,17 +138,16 @@ def WebDiscovery(nmapObj, domain):
         list_of_webstack = wappFormat(list_of_webstack)
         totalsize=len(list_of_webstack)
         itemcount=1
-        appendFile(domain + ".wapp", '{"data":')
+        appendFile(domain + ".wapp", '{"data":[')
         for item in list_of_webstack:
             njson = json.dumps(item)
-            #appendFile(domain + ".wapp", '"host":')
             appendFile(domain + ".wapp", njson)
             if itemcount < totalsize:
                 appendFile(domain + ".wapp", ',')
             itemcount+=1
             appendFile(domain + ".web." + str(item['status']) + ".txt", item['url']+"\n")
 
-        appendFile(domain + ".wapp", '}')
+        appendFile(domain + ".wapp", ']}')
     else:
         list_of_webstack = readFile(domain + ".wapp")
 
