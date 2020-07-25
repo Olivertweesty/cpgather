@@ -24,7 +24,7 @@ from modules.mod_waybackmachine import WayBackMachine
 from modules.mod_crtsh import crtshQuery
 
 from modules.mod_forwarddns import parseForwardDnsFile
-from modules.mod_webcheck import FindWeb, RetrieveWebContent, wappFormat, normalize_jsfiles, GetJsCommonDirectoriesURI, getUrlPath
+from modules.mod_webcheck import FindWeb, RetrieveWebContent, wappFormat, normalize_jsfiles, GetJsCommonDirectoriesURI, getUrlPath, ExtractJsLinks
 
 SUBWL="/usr/share/wordlists/commonspeak2-wordlists/subdomains/subdomains.txt"
 RESOLVERS="/usr/share/massdns/lists/resolvers.txt"                                      # List of open DNS we can use to resolve / brute dns subdomains
@@ -185,6 +185,17 @@ def WebDiscovery(nmapObj, domain):
         for jsdiruri in list_of_jsdirs_uri:
             appendFile(domain + ".js.dirsuri", jsdiruri  +"\n")
     
+    ###
+    ###
+    print "[*] Extracting more endpoints from js files via LinkFinder"
+    if os.path.isfile(domain+".js.endpoints") == False or os.path.getsize(domain+".js.endpoints") == 0:
+        if os.path.isfile(domain+".js.allfiles") == False or os.path.getsize(domain+".js.allfiles") == 0:
+            all_js_files = list(set(readFile(domain+".js.allfiles")))
+            all_endpoints_found_inside_js = ExtractJsLinks(domain,all_js_files)
+            jsondata = json.dumps(all_endpoints_found_inside_js)
+            appendFile(domain+".js.endpoints",jsondata)
+        else:
+            print("[x] Failed: " + domain+".js.allfiles not found")
 
     return webhosts,list_of_webstack
 

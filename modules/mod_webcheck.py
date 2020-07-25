@@ -272,6 +272,50 @@ def FindInterestingContent(list_of_webstack):
 
 
 
+def ExtractJsLinks(domain,all_js_files):
+    jsdict=dict()
+    jsall=list()
+    all_js_files=list(set(all_js_files))
+
+    for jsurl in all_js_files:
+        if domain not in jsurl:
+            continue
+        jsurl = jsurl.rstrip()
+
+        print("target: {}".format(str(jsurl)))
+        jsdict['src']=jsurl
+        found = execLinkFinder(jsurl)
+        more_js_files=list()
+        for item in found.split('\n'):
+            item=item.rstrip()
+
+            if len(item) < 1:
+                continue
+            if 'TLSV1_ALERT_PROTOCOL_VERSION' in item or 'WRONG_VERSION_NUMBER' in item:
+                continue
+            if 'linkfinder.py' in item and 'use -h for help':
+                continue
+            if 'SSL error: HTTP Error 403:' in item:
+                continue
+
+            if "http" in item:
+                more_js_files.append(item)
+            elif "/" in item[0] and "/" in item[1]:
+                proto,host,port=parseUrlProtoHostPort(jsurl)
+                more_js_files.append(proto+"://"+item)
+            else:
+                proto,host,port=parseUrlProtoHostPort(jsurl)
+                if item[0] == "/":
+                    furi = proto + "://" + host +":"+port + item
+                else:
+                    furi = proto + "://" + host +":"+port +"/"+ item
+                more_js_files.append(furi)
+
+        print(str(len(more_js_files)))
+        jsdict['found']=list(more_js_files)
+        jsall.append(dict(jsdict))
+
+    return(jsall)
 
 
 
