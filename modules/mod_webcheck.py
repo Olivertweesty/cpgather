@@ -283,7 +283,7 @@ def ExtractJsLinks(domain,all_js_files):
             continue
         jsurl = jsurl.rstrip()
 
-        print("target: {}".format(str(jsurl)))
+        print("  + Scrapping: {}".format(str(jsurl)))
         jsdict['src']=jsurl
         found = execLinkFinder(jsurl)
         more_js_files=list()
@@ -314,7 +314,6 @@ def ExtractJsLinks(domain,all_js_files):
                     furi = proto + "://" + host +":"+port +"/"+ item
                 more_js_files.append(furi)
 
-        print(str(len(more_js_files)))
         jsdict['found']=list(more_js_files)
         jsall.append(dict(jsdict))
 
