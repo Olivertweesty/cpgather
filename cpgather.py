@@ -196,6 +196,8 @@ def WebDiscovery(nmapObj, domain):
             appendFile(domain+".js.endpoints",jsondata)
         else:
             print("[x] Failed: " + domain+".js.allfiles not found")
+    else:
+        print("[*] Skipping: " + domain+".js.endpoints found")
 
     return webhosts,list_of_webstack
 
