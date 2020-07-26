@@ -3,6 +3,7 @@
 from modules.mod_massdns import parseMassdnsStruct, getAllipsFor
 from modules.mod_wappalyzer import execWappalyzer
 from modules.misc import sort_uniq, getUrlPath, parseUrlProtoHostPort, isMimetype
+from modules.linkfinder import execLinkFinder
 
 import concurrent.futures
 import requests
