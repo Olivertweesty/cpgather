@@ -24,6 +24,9 @@ cpgather will use other tools like sublist3r, amass, masscan, nmap, s3scanner, w
 - domain.buckets (s3 buckets)
 - domain.wapp (full weba pplication stack, from jquery to webserver)
 - domain.web (full list of URLS found)
+- domain.js.allfiles (full list with all javscript files found while scrapping the first page of each target. Targets are in uri format)
+- domain.js.dirs (list of each directory that contains js files for all targets)
+- domain.js.dirsuri (same as above, but full uri)
 
 
 ### notes
