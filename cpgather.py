@@ -192,6 +192,7 @@ def WebDiscovery(nmapObj, domain):
         all_js_files = list(set(readFile(domain+".js.allfiles")))
         all_endpoints_found_inside_js = ExtractJsLinks(domain,all_js_files)
         jsondata = json.dumps(all_endpoints_found_inside_js)
+        print("[*] Generating endpoints json file: {}".format(str(domain+".js.endpoints")))
         appendFile(domain+".js.endpoints",jsondata)
     else:
         print("[*] Skipping: " + domain+".js.endpoints found")
