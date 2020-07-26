@@ -151,10 +151,14 @@ def hostFilter(hostlist):
     return unique
 
 def isMimetype(valor):
+    result=False
     if os.path.isfile("/etc/mime.types") == False:
         return False
     with open("/etc/mime.types", "r") as f:
         content = f.read()
-        if re.search(valor,content):
-            return True
-        return False
+        try:
+            if re.search(valor,content):
+                result=True
+        except:
+            pass
+    return result
