@@ -9,6 +9,7 @@ try:
     from urllib.parse import urlparse
 except ImportError:
     from urlparse import urlparse
+import re
 
 def uniq(listval):
     last = object()
