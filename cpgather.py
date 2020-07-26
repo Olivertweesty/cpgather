@@ -189,14 +189,10 @@ def WebDiscovery(nmapObj, domain):
     ###
     print "[*] Extracting more endpoints from js files via LinkFinder"
     if os.path.isfile(domain+".js.endpoints") == False or os.path.getsize(domain+".js.endpoints") == 0:
-        print("  + Checking for previous js.allfiles content")
-        if os.path.isfile(domain+".js.allfiles") == False or os.path.getsize(domain+".js.allfiles") == 0:
-            all_js_files = list(set(readFile(domain+".js.allfiles")))
-            all_endpoints_found_inside_js = ExtractJsLinks(domain,all_js_files)
-            jsondata = json.dumps(all_endpoints_found_inside_js)
-            appendFile(domain+".js.endpoints",jsondata)
-        else:
-            print("[x] Failed: " + domain+".js.allfiles not found")
+        all_js_files = list(set(readFile(domain+".js.allfiles")))
+        all_endpoints_found_inside_js = ExtractJsLinks(domain,all_js_files)
+        jsondata = json.dumps(all_endpoints_found_inside_js)
+        appendFile(domain+".js.endpoints",jsondata)
     else:
         print("[*] Skipping: " + domain+".js.endpoints found")
 
