@@ -205,9 +205,7 @@ def S3Discovery(domain,verbose):
     print "[*] S3 Buckets Discovery phase has started"
     execS3Scanner(domain)
     list_of_buckets = readFile(domain+".buckets")
-    if verbose:
-        for bf in list_of_buckets:
-            print "    + Bucket Found: %s" %str(bf.rstrip("\n"))
+    print("  + {} buckets found.".format(str(len(list_of_buckets))))
     return True
 
 
