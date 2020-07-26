@@ -148,3 +148,12 @@ def hostFilter(hostlist):
         if nhost not in unique:
             unique.append(nhost)
     return unique
+
+def isMimetype(valor):
+    if os.path.isfile("/etc/mime.types") == False:
+        return False
+    with open("/etc/mime.types", "r") as f:
+        content = f.read()
+        if re.search(valor,content):
+            return True
+        return False

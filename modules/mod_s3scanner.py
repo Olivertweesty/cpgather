@@ -7,7 +7,6 @@ import os
 
 def execS3Scanner(domain):
     '''
-
     :param domain: target domain
     :return: amass std output and errors
     '''

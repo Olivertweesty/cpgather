@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from modules.mod_massdns import parseMassdnsStruct, getAllipsFor
 from modules.mod_wappalyzer import execWappalyzer
-from modules.misc import sort_uniq, getUrlPath, parseUrlProtoHostPort
+from modules.misc import sort_uniq, getUrlPath, parseUrlProtoHostPort, isMimetype
 
 import concurrent.futures
 import requests
@@ -297,7 +297,9 @@ def ExtractJsLinks(domain,all_js_files):
                 continue
             if 'SSL error: HTTP Error 403:' in item:
                 continue
-
+            if isMimetype(item):
+                continue
+                
             if "http" in item:
                 more_js_files.append(item)
             elif "/" in item[0] and "/" in item[1]:
