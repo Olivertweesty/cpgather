@@ -202,10 +202,10 @@ def WebDiscovery(nmapObj, domain):
 def S3Discovery(domain,verbose):
     print "[*] S3 Buckets Discovery phase has started"
     execS3Scanner(domain)
-    list = readFile(domain+".buckets")
+    list_of_buckets = readFile(domain+".buckets")
     if verbose:
-        for bucket in list:
-            print "    + Bucket Found: %s" %str(bucket.rstrip("\n"))
+        for bf in list_of_buckets:
+            print "    + Bucket Found: %s" %str(bf.rstrip("\n"))
     return True
 
 
