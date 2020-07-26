@@ -12,17 +12,9 @@ def parseLinkFinder(savefile):
     return endpoints
 
 
-def execLinkFinder(remote_jsfile,reportlocation):
-    vhost, proto, port, path, query, fragment = splitURI(remote_jsfile)
-
-    savefile = reportlocation+"/lfinder"+npath+".html"
-    # target = https://sub.domain.com/JS/release/endpoints.js
-    # reportlocation = domain.com.crawler/sub.domain.com.443/
-    # npath = lfinder-JS-release-endpoints.js.html
-    npath = path.replace("/","-").replace(" ","")
+def execLinkFinder(remote_jsfile):
     p = subprocess.Popen(
-        ['linkfinder', '-o', savefile ,'-i', remote_jsfile],
+        ['linkfinder', '-o cli' ,'-i', remote_jsfile],
         stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     out, err = p.communicate()
-
-    return savefile
+    return out
