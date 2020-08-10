@@ -11,3 +11,5 @@ ipaddress
 dnspython
 bs4
 futures
+python-nmap
+crtsh

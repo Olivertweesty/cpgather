@@ -42,19 +42,22 @@ def FindWeb(domain, nmapObj):
         openports = nmapObj[ip]['tcp'].keys()
         for port in openports:
             service_details = nmapObj[ip]['tcp'][port]
-            for wtag in web_service_names:
-                if wtag == service_details['name']:
-                    proto = "http"
-                    if service_details['name'] == 'ssl' \
-                            or 'https' in service_details['name'] \
-                            or service_details['tunnel'] == "ssl":
-                        proto = "https"
+            try:
+                for wtag in web_service_names:
+                    if wtag == service_details['name']:
+                        proto = "http"
+                        if service_details['name'] == 'ssl' \
+                                or 'https' in service_details['name'] \
+                                or service_details['tunnel'] == "ssl":
+                            proto = "https"
 
-                    if len(vhostlist) > 0:
-                        for vhost in vhostlist:
-                            weblist.append(proto + "://" + vhost + ":" + str(port))
-                    else:
-                        weblist.append(proto + "://" + ip + ":" + str(port))
+                        if len(vhostlist) > 0:
+                            for vhost in vhostlist:
+                                weblist.append(proto + "://" + vhost + ":" + str(port))
+                        else:
+                            weblist.append(proto + "://" + ip + ":" + str(port))
+            except:
+                pass
 
     weblist = sort_uniq(weblist)
     return weblist

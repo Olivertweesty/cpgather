@@ -18,7 +18,7 @@ def execSubfinder(domain,wordlist):
     else:
         out = ""
         err = ""
-        print "  + Subfinder report found. Skipping..."
+        print("  + Subfinder report found. Skipping...")
     return out,err
 
 def parseSubfinder(domain):

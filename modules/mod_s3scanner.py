@@ -19,7 +19,7 @@ def execS3Scanner(domain):
     else:
         out = ""
         err = ""
-        print "  + S3 Bucket list found, skipping..."
+        print("  + S3 Bucket list found, skipping...")
 
     return out,err
 

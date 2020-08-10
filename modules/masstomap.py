@@ -18,9 +18,9 @@ def execMton(domain):
     else:
         out = ""
         err = ""
-        print "  + Nmap report found, Skipping..."
+        print("  + Nmap report found, Skipping...")
 
-    print err
+    print(err)
 
     return out,err
 
@@ -31,13 +31,13 @@ def parseNmapXML(xmlreport):
         all credits to Patroklos Argyroudis - argp
         i'm just doing something different with the data
     '''
-    print "   + Parsing portscan reports"
+    print("   + Parsing portscan reports")
 
     if os.path.isfile(xmlreport) == False:
-        print "[x] There is no portscan report here"
+        print("[x] There is no portscan report here")
         return False
     if os.path.getsize(xmlreport) == 0:
-        print "[x] There is no portscan content here"
+        print("[x] There is no portscan content here")
         return False
     seen = list()
     hosts = list()

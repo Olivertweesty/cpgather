@@ -155,6 +155,7 @@ install_subfinder(){
         echo "[*] Installing subfinder"
         #cd /usr/local/
         go get github.com/projectdiscovery/subfinder/cmd/subfinder
+        sudo ln -s /home/Tools/Sublist3r/sublist3r.py /usr/sbin/subfinder
         #go get github.com/subfinder/subfinder
         #cd ${GOPATH}/src/github.com/subfinder/subfinder
         #go build

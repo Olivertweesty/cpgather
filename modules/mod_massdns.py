@@ -21,7 +21,7 @@ def execMassdns(domain,resolvers):
     else:
         out = ""
         err = ""
-        print "  + massdns report found, Skipping..."
+        print("  + massdns report found, Skipping...")
 
     return out, err
 

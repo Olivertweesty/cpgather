@@ -34,10 +34,10 @@ CPPATH=os.path.dirname(os.path.realpath(__file__))
 
 
 def banner():
-    print "cpgather "+str(__version__)+" @ dogasantos"
-    print "------------------------------------------------"
-    print " subdomains, portscan, webstack, "
-    print "------------------------------------------------"
+    print("cpgather "+str(__version__)+" @ dogasantos")
+    print("------------------------------------------------")
+    print(" subdomains, portscan, webstack, ")
+    print("------------------------------------------------")
 
 def parser_error(errmsg):
     banner()
@@ -57,31 +57,31 @@ def parse_args():
 
 
 def TargetDiscovery(domain,wordlist):
-    print "[*] Subdomain discovery phase"
+    print("[*] Subdomain discovery phase")
     ips = list()
     hosts = list()
 
-    print "  + Running amass"
+    print("  + Running amass")
     execAmass(domain)
 
-    print "  + Running sublist3r"
+    print("  + Running sublist3r")
     execSublist3r(domain)
 
-    print "  + Running WayBack machine query"
+    print("  + Running WayBack machine query")
     wayback_found_list = WayBackMachine(domain)
 
     #print "  + Running Crt.sh query"
     #crtsh_found_list = crtshQuery(domain)
 
-    print "  + Running subfinder (bruteforce mode)"
+    print("  + Running subfinder (bruteforce mode)")
     execSubfinder(domain,wordlist)
 
-    print "  + Parsing subfinder report"
+    print("  + Parsing subfinder report")
     subfinder_found_list = parseSubfinder(domain)
     for item in subfinder_found_list:
         hosts.append(item.rstrip("\n"))
 
-    print "  + Parsing WayBack machine report"
+    print("  + Parsing WayBack machine report")
     for item in wayback_found_list:
         hosts.append(item.rstrip("\n"))
 
@@ -89,12 +89,12 @@ def TargetDiscovery(domain,wordlist):
     #for item in crtsh_found_list:
     #    hosts.append(item.rstrip("\n"))
 
-    print "  + Parsing amass report"
+    print("  + Parsing amass report")
     amass_found_list = parseAmass(domain)
     for item in amass_found_list:
         hosts.append(item.rstrip("\n"))
 
-    print "  + Parsing sublist3r report"
+    print("  + Parsing sublist3r report")
     sublist3r_found_list = parseSublist3r(domain)
     for item in sublist3r_found_list:
         hosts.append(item.rstrip("\n"))
@@ -108,31 +108,31 @@ def TargetDiscovery(domain,wordlist):
     uhosts = list(set(hosts))
 
     saveFile(domain + ".hosts", uhosts)
-    print "  + Hosts file created: " + domain + ".hosts"
+    print("  + Hosts file created: " + domain + ".hosts")
 
-    print "  + Running massdns"
+    print("  + Running massdns")
     execMassdns(domain,RESOLVERS)
-    print "  + Parsing massdns report"
+    print("  + Parsing massdns report")
     massdns_iplist = parseMassdns(domain)
     for nip in massdns_iplist:
         ips.append(nip)
 
     unique_ips = list(set(ips))
     saveFile(domain + ".ips", unique_ips)
-    print "  + IPs file created: " + domain + ".ips"
-    print "[*] Done: %d ips and %d hosts discovered" % (len(unique_ips), len(uhosts))
+    print("  + IPs file created: " + domain + ".ips")
+    print("[*] Done: {} ips and {} hosts discovered".format(len(unique_ips), len(uhosts)))
 
     return unique_ips,uhosts
 
 def WebDiscovery(nmapObj, domain):
-    print "[*] Web Discovery phase has started"
+    print("[*] Web Discovery phase has started")
     if os.path.isfile(domain+".web") == False or os.path.getsize(domain+".web") == 0:
         webhosts=FindWeb(domain, nmapObj)
         saveFile(domain + ".web", webhosts)
     else:
         webhosts = readFile(domain + ".web")
 
-    print "[*] Web Stack identification via Wappalyzer"
+    print("[*] Web Stack identification via Wappalyzer")
     if os.path.isfile(domain+".wapp") == False or os.path.getsize(domain+".wapp") == 0:
         list_of_webstack = RetrieveWebContent(webhosts)
         list_of_webstack = wappFormat(list_of_webstack)
@@ -152,7 +152,7 @@ def WebDiscovery(nmapObj, domain):
         list_of_webstack = readFile(domain + ".wapp")
 
 
-    print "[*] Javascript files identification"
+    print("[*] Javascript files identification")
     if os.path.isfile(domain+".js.allfiles") == False or os.path.getsize(domain+".js.allfiles") == 0:
         list_of_js_files_all=list()
         all_lists_of_all_js_of_all_nodes=list()
@@ -187,7 +187,7 @@ def WebDiscovery(nmapObj, domain):
     
     ###
     ###
-    print "[*] Extracting more endpoints from js files via LinkFinder"
+    print("[*] Extracting more endpoints from js files via LinkFinder")
     if os.path.isfile(domain+".js.endpoints") == False or os.path.getsize(domain+".js.endpoints") == 0:
         all_js_files = list(set(readFile(domain+".js.allfiles")))
         all_endpoints_found_inside_js = ExtractJsLinks(domain,all_js_files)
@@ -200,7 +200,7 @@ def WebDiscovery(nmapObj, domain):
     return webhosts,list_of_webstack
 
 def S3Discovery(domain,verbose):
-    print "[*] S3 Buckets Discovery phase has started"
+    print("[*] S3 Buckets Discovery phase has started")
     execS3Scanner(domain)
     list_of_buckets = readFile(domain+".buckets")
     print("  + {} buckets found.".format(str(len(list_of_buckets))))
@@ -228,9 +228,9 @@ if __name__ == "__main__":
         user_noscan = False
 
     if not user_noscan:
-        print "[*] Port Scanning phase started"
+        print("[*] Port Scanning phase started")
         if os.path.isfile(user_domain + ".nmap.xml") == False or os.path.getsize(user_domain + ".nmap.xml") == 0:
-            print "  + Running masscan against %s targets" % str(len(ips))
+            print("  + Running masscan against {} targets".format(str(len(ips))))
             execMasscan(user_domain, ports)
             oports = readFile(user_domain + ".masscan")
             if len(oports) > 0:
@@ -240,7 +240,7 @@ if __name__ == "__main__":
                 print("[x] No open ports found for this domain. Aborting...")
                 sys.exit(1)
         else:
-            print "  + Nmap report found, loading data..."
+            print("  + Nmap report found, loading data...")
         nmapObj = nmap_LoadXmlObject(user_domain + ".nmap.xml")
 
     if nmapObj:

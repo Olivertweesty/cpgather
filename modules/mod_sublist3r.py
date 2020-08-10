@@ -35,7 +35,7 @@ def execSublist3r(domain):
     else:
         out = ""
         err = ""
-        print "  + Sublist3r report found. Skipping..."
+        print("  + Sublist3r report found. Skipping...")
 
 
     return out,err

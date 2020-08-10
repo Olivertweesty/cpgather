@@ -15,7 +15,7 @@ def execAmass(domain):
             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         out, err = p.communicate()
     else:
-        print "  + Amass report found. Skipping..."
+        print("  + Amass report found. Skipping...")
 
     return out,err
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from misc import readFile, saveFile, checkFqdn
+from . import misc
 from crtsh import crtshAPI
 import os
 import json
@@ -27,7 +27,7 @@ def crtshQuery(domain):
                         continue
                     if '*' in v:
                         continue
-                    if checkFqdn(v) == False:
+                    if misc.checkFqdn(v) == False:
                         continue
                     if '\n' in v:
                         for tok in v.split('\n'):
@@ -36,10 +36,10 @@ def crtshQuery(domain):
                         found.append(v)
 
         found = list(set(found))
-        saveFile(domain + ".sub.crtsh", found)
+        misc.saveFile(domain + ".sub.crtsh", found)
     else:
 
-        temp = readFile(domain + ".sub.crtsh")
+        temp = misc.readFile(domain + ".sub.crtsh")
         for item in temp:
             if len(item) > 2:
                 found.append(item.rstrip("\n"))
